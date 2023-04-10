@@ -12,14 +12,14 @@ using ShoppingCart.Infrastructure;
 namespace ShoppingCart.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230406163844_SHoopingCartMigration")]
-    partial class SHoopingCartMigration
+    [Migration("20230410181149_ShoppingCart")]
+    partial class ShoppingCart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);

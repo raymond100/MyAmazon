@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(
-builder.Configuration["ConnectionStrings:DbConnection"]
-));
+builder.Services.AddDbContext<DataContext>(options => {
+    options.UseSqlServer(
+builder.Configuration["ConnectionStrings:DbConnection"]);
+    });
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -30,6 +32,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.MapControllerRoute(
+    name: "Areas",
+    pattern: "{area:exists}/{controller=Products}/{action=Index}/{id?}");
+    
 
 app.MapControllerRoute(
     name: "products",
@@ -44,5 +50,6 @@ var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<Data
 SeedData.SeedDatabase(context);
 
 app.Run();
+
 
 

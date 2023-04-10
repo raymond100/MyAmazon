@@ -4,7 +4,7 @@
 
 namespace ShoppingCart.Migrations
 {
-    public partial class SHoopingCartMigration : Migration
+    public partial class ShoppingCart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

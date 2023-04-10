@@ -19,6 +19,7 @@ namespace ShoppingCart.Controllers
             ViewBag.PageNumber = p;
             ViewBag.PageRange = pageSize;
             ViewBag.CategorySlug = categorySlug;
+            
 
             if (categorySlug == "")
             {
