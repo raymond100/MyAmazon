@@ -3,10 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DataContext>(options => {
-    options.UseSqlServer(
-builder.Configuration["ConnectionStrings:DbConnection"]);
-    });
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<DataContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("LiteDbConnection")));
+}
+else
+{
+    builder.Services.AddDbContext<DataContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
+}    
 
 builder.Services.AddDistributedMemoryCache();
 
