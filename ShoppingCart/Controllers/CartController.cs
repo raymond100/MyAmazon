@@ -18,11 +18,8 @@ namespace ShoppingCart.Controllers
         {
             List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
-            CartViewModel cartVM = new()
-            {
-                CartItems = cart,
-                GrandTotal = cart.Sum(x => x.Quantity * x.Price) 
-            };
+            CartViewModel cartVM = new(cart); 
+    
             return View(cartVM);
         }
 

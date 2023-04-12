@@ -1,0 +1,86 @@
+@model ReportViewModel
+@{
+  Layout = null;
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-10 mx-auto" style="box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);">
+            <div class="card-body">
+                <div class="card-header d-flex justify-content-center pb-3 mb-5">
+                    <div class="text-center">
+                    <h5 class="card-title">Shopping Cart</h5>
+                    <p class="card-text">
+                        Hey Ray, We've got your order! <br> Your world is about to look a whole lot better.
+                    </p>
+                    <p>Order No. Ray-100</p>
+                    <small class="date">12/04/2023</small>
+                    </div>
+                </div>
+                <div class="content">
+                    <article class="mb-3">
+                    <p class="card-text ">Items Ordered</p>
+                    <div class="items">
+                        <ol>
+                            @foreach (var item in Model._cart.CartItems)
+                            {
+                                <li class="pb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                    <p><img src="/media/products/@item.Image" width="60"> 
+                                    @item.ProductName</p>
+                                        <p class="mx-3">
+                                            <span class="mx-4">x @item.Quantity</span>
+                                            <span> @item.Price </span>
+                                        </p>
+                                    </div>
+                                    <hr>
+                                </li>
+                            }
+                        
+                        </ol>
+                    </div>
+                    <div>
+                        <p class="card-text d-flex justify-content-between">
+                            Discount(Just in Case):
+                            <small>0$</small>
+                        </p>
+                        <p class="card-text d-flex justify-content-between">
+                        Subtotal:
+                        <small>0$</small>
+                        </p>
+                        <p class="card-text d-flex justify-content-between">
+                        Total:   
+                        <small>@Model._cart.GrandTotal $</small>
+                        </p>
+                    </div>
+                    </article>
+                    <article>
+                        <p class="card-text ">Payment Info</p>
+                    </article>
+                    <article>
+                        <p class="card-text ">Billing Info</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+       </div>
+    </div>
+
+</div>
+</body>
+</html>
