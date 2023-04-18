@@ -56,14 +56,14 @@
         <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" asp-controller="Products" asp-action="Index">My Amazon</a>
+    <a class="navbar-brand" href="/">My Amazon</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" asp-controller="Products" asp-action="Index">Home</a>
+          <a class="nav-link active" href="/products" aria-current="page">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Shop</a>
@@ -75,9 +75,9 @@
           <a class="nav-link" href="#">Services</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">Search</button>
+      <form class="d-flex" asp-controller="Products" asp-action="Index">
+        <input class="form-control me-2" type="text" name="SearchString" placeholder="Search" aria-label="Search">
+        <input class="btn btn-outline-light" type="submit" value="Search" />
       </form>
       <ul class="navbar-nav">
          <vc:small-cart />

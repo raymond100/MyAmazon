@@ -1,4 +1,5 @@
-﻿using ShoppingCart.Infrastructure.Validation;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShoppingCart.Infrastructure.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +10,7 @@ namespace ShoppingCart.Models
         [Key]
         public long Id { get; set; }
 
+        [BindProperty(SupportsGet = true)]
         [Required(ErrorMessage = "Please Enter a Value")]
         public string Name { get; set; }
 
@@ -24,13 +26,15 @@ namespace ShoppingCart.Models
 
         [Required, Range(1, int.MaxValue, ErrorMessage = "You Must Choose a Category")]
         public long CategoryId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public Category? Category { get; set; }
         public string Image { get; set; } = "noimage.png";
         
-
         [NotMapped]
         [FileExtension]
         public IFormFile? ImageUpload { get; set; }
+        
     }
 }
 

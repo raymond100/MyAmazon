@@ -13,8 +13,26 @@ namespace ShoppingCart.Controllers
         {
             this._context = _context;
         }
-        public async Task<IActionResult> Index(string categorySlug = "", int p = 1)
+        public async Task<IActionResult> Index(string searchString, string categorySlug = "", int p = 1)
         {
+
+
+             var products = from m in _context.Products
+                select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name.ToLower()!.Contains(searchString.ToLower()));
+                return View(await products.ToListAsync());
+            }
+
+            // if (!String.IsNullOrEmpty(categorySlug))
+            // {
+            //     products = products.Where(s => s.Slug == categorySlug);
+            // }
+
+
+
             int pageSize = 10;
             ViewBag.PageNumber = p;
             ViewBag.PageRange = pageSize;
