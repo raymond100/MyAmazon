@@ -30,9 +30,12 @@
                                             <p class="fw-bold"> @item.ProductName </p>
                                              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur minus quasi, aperiam praesentium optio distinctio quibusdam tempora a est esse facilis tempore omnis ea! Vitae eaque facilis culpa cupiditate qui.</p>
                                              <div class="row">
-                                                <div class="col-sm-3 d-flex">
+                                                <div class="col-sm-4 d-flex justify-content-between">
                                                     <span>Qty: </span>
-                                                <select asp-for="SelectedOption" asp-items="@Model.Options" id="selectQty" asp-route-id="@item.ProductId"></select>
+                                                @* <select asp-for="SelectedOption" asp-items="@Model.Options" asp-route-id="@item.ProductId"  asp-action="addQuantity"></select> *@
+                                                <a class="btn btn-sm" asp-action="Decrease" asp-route-id="@item.ProductId"><i class="bi bi-arrow-down-short"></i></a>
+                                                    <span>@item.Quantity</span>
+                                                <a class="btn btn-sm" asp-action="Add" asp-route-id="@item.ProductId"><i class="bi bi-arrow-up-short"></i></a>
                                                 </div>
                                                 <div class="col-sm-1 pipe">
                                                     |
