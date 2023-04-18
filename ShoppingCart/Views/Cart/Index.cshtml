@@ -3,8 +3,76 @@
     ViewData["Title"] = "Cart Overview";
 }
 
+<main class="mt-5">
+        <div class="container">
+        <div class="row">
+            <div class="card mb-3" style="box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);">
+            <div class="card-body">
+                <div class="pb-3 mb-3">
+                    <h3 class="card-title">Shopping Cart</h3>
+                    <a asp-action="Clear" class="text-link">Delete all items</a>
+                </div>
+                <div class="content">
+                     <p class="d-flex justify-content-end">Price</p>
+                     <hr>
+                    <article class="mb-3">
+                    <div class="items">
+                        <ol style="list-style: none;">
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <li class="pb-3">
+                                    <div class="d-flex justify-content-between">
+                                     <div class="row">
+                                        <div class="col-md-3">
+                                            <img src="/media/products/@item.Image" width="200"> 
+                                        </div>
+                                         <div class="col-md-6">
+                                            <p class="fw-bold"> @item.ProductName </p>
+                                             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur minus quasi, aperiam praesentium optio distinctio quibusdam tempora a est esse facilis tempore omnis ea! Vitae eaque facilis culpa cupiditate qui.</p>
+                                             <div class="row">
+                                                <div class="col-sm-3 d-flex">
+                                                    <span>Qty: </span>
+                                                <select asp-for="SelectedOption" asp-items="@Model.Options" id="selectQty" asp-route-id="@item.ProductId"></select>
+                                                </div>
+                                                <div class="col-sm-1 pipe">
+                                                    |
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <a asp-action="Remove" asp-route-id="@item.ProductId" class="text-link">Delete</a>
+                                                </div>
+                                             
+                                             </div>
+                                        </div>
+                                     </div>
+                                    <p class="fw-bold">
+                                        <span> $@item.Price </span>
+                                    </p>
+                                    </div>
+                                    <hr>
+                                </li>
+                            }
+                        
+                        </ol>
+                    </div>
+                    </article>
+                </div>
 
-@if (Model.CartItems.Count > 0)
+                <footer>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Subtotal (@Model.CartItems.Count items): <span class="fw-bold">@Model.GrandTotal.ToString("C2")</span></p>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <a class="btn btn-warning btn-sm px-4" style="border-radius: 7px;">Proceed to checkout</a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+       </div>
+    </div>
+</main>
+@* @if (Model.CartItems.Count > 0)
 {
     <table class="table">
         <tr>
@@ -45,4 +113,14 @@ else
 {
     <h3 class="display-4 text-center">Your cart is empty</h3>
 }
+ *@
 
+<style>
+    .text-link{
+        color: #007185!important;
+        text-decoration: none;
+    }
+    .pipe{
+        color:#ddd;
+    }
+</style>

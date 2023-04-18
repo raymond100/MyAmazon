@@ -15,7 +15,7 @@ namespace ShoppingCart.Controllers
         }
         public async Task<IActionResult> Index(string categorySlug = "", int p = 1)
         {
-            int pageSize = 3;
+            int pageSize = 10;
             ViewBag.PageNumber = p;
             ViewBag.PageRange = pageSize;
             ViewBag.CategorySlug = categorySlug;

@@ -5,9 +5,30 @@
 }
 
 
-<h1>Products</h1>
+
+<main class="container my-5">
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <!-- Product 1 -->
+     @foreach(var item in Model)
+    {
+    <div class="col">
+      <div class="card h-100">
+        <img src="/media/products/@item.Image" class="card-img-top" alt="..."  style="object-fit: contain; height: 200px;">
+        <div class="card-body">
+          <h5 class="card-title">@item.Name</h5>
+          <p class="card-text" style="color: #565959">@Html.Raw(item.Description)</p>
+           <p class="font-weight-bold">@item.Price.ToString("C2")</p>
+          <a class="btn btn-warning btn-sm" asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id">Add to Cart</a>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</main>
+
+
 <div class="row">
-    @foreach(var item in Model)
+    @* @foreach(var item in Model)
     {
         <div class="col-4">
             <img src="/media/products/@item.Image" class="img-fluid" alt="" />
@@ -19,10 +40,12 @@
                 @item.Price.ToString("C2")
             </p>
             <p>
-                <a class="btn btn-primary"asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id">Add to cart</a>
+                <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id">Add to cart</a>
             </p>
         </div>
-    }
+    } *@
+
+
 
 
 @if(ViewBag.TotalPages > 1)
@@ -35,6 +58,5 @@
         </div>
 
 }
-
 
 </div>
