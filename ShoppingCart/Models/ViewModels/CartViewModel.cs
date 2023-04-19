@@ -16,6 +16,21 @@ namespace ShoppingCart.Models.ViewModels
             CartItems = cartItems;
         }
         private decimal total;
+
+        private int NumberOfItemsCount;
+
+        public int NumberOfItems
+        {
+            get
+            {
+              return CartItems.Sum(x => x.Quantity);  
+            }
+
+            set
+            {
+                NumberOfItemsCount = NumberOfItems;
+            }
+        }
     
         public decimal GrandTotal
         { 

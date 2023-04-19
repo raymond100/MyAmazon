@@ -63,10 +63,10 @@
                 <footer>
                     <div class="row">
                         <div class="col-md-12">
-                            <p>Subtotal (@Model.CartItems.Count items): <span class="fw-bold">@Model.GrandTotal.ToString("C2")</span></p>
+                            <p>Subtotal (@Model.NumberOfItems items): <span class="fw-bold">@Model.GrandTotal.ToString("C2")</span></p>
                         </div>
                         <div class="col-md-12 d-flex justify-content-end">
-                            <a class="btn btn-warning btn-sm px-4" style="border-radius: 7px;">Proceed to checkout</a>
+                            <a href="/order" class="btn btn-warning btn-sm px-4" style="border-radius: 7px;">Proceed to checkout</a>
                         </div>
                     </div>
                 </footer>

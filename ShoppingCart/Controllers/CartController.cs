@@ -34,7 +34,7 @@ namespace ShoppingCart.Controllers
             return View(cartVM);
         }
 
-        public async Task<IActionResult> Add(long id, String SelectedOption)
+        public async Task<IActionResult> Add(long id)
         {
             Product product = await _context.Products.FindAsync(id);
             if (id == null || product == null)
@@ -45,8 +45,6 @@ namespace ShoppingCart.Controllers
             List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
             CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
-
-             Console.WriteLine("Option : " + SelectedOption);
 
             if (cartItem == null)
             {
@@ -82,7 +80,7 @@ namespace ShoppingCart.Controllers
                 HttpContext.Session.SetJson("Cart", cart);
             }
             TempData["Success"] = "The Product has been Removed";
-            return RedirectToAction("Index");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         public async Task<IActionResult> Remove(long id)
@@ -104,6 +102,13 @@ namespace ShoppingCart.Controllers
         public IActionResult Clear()
         {
             HttpContext.Session.Remove("Cart");
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult addQuantity(long id, String SelectedOption){
+            Console.WriteLine("Id: " + id);
+            Console.WriteLine("Option: " + SelectedOption);
             return RedirectToAction("Index");
         }
         
