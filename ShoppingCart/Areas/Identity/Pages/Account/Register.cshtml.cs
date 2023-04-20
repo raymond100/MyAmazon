@@ -132,7 +132,7 @@ namespace ShoppingCart.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole("Customer"));
                         role = await _roleManager.FindByNameAsync("Customer");
                     }
-                    
+
                     await _userManager.AddToRoleAsync(user, role.Name);
                     _logger.LogInformation("User created a new account with password.");
 
