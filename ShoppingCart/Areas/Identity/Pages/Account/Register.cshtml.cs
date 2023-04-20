@@ -26,6 +26,7 @@ namespace ShoppingCart.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<AppUser> _userStore;
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -36,9 +37,11 @@ namespace ShoppingCart.Areas.Identity.Pages.Account
             IUserStore<AppUser> userStore,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -121,6 +124,16 @@ namespace ShoppingCart.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    // Assign "Customer" role to the user
+                    var role = await _roleManager.FindByNameAsync("Customer");
+                    if (role == null)
+                    {
+                        // Create the "Customer" role if it doesn't exist
+                        await _roleManager.CreateAsync(new IdentityRole("Customer"));
+                        role = await _roleManager.FindByNameAsync("Customer");
+                    }
+                    
+                    await _userManager.AddToRoleAsync(user, role.Name);
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
