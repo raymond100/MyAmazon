@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI;
 using ShoppingCart.Infrastructure;
 using ShoppingCart.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,9 @@ else
         options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 }    
 
+// builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//     .AddEntityFrameworkStores<DataContext>();
+
 builder.Services.AddDistributedMemoryCache();
 
 //Adding The Session
@@ -26,6 +32,11 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 4;
@@ -38,6 +49,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -54,20 +67,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "Areas",
-    pattern: "{area:exists}/{controller=Products}/{action=Index}/{id?}");
-    
 
-app.MapControllerRoute(
-    name: "products",
-    pattern: "/products/{categorySlug?}",
-    defaults: new { controller = "Products", action = "Index" });
-  
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Products}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();
+    endpoints.MapControllerRoute(
+        name: "Areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+});
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Products}/{action=Index}/{id?}");
 
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
 SeedData.SeedDatabase(context);
