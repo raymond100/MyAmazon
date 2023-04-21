@@ -1,65 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShoppingCart.Infrastructure;
 using ShoppingCart.Models;
+using ShoppingCart.Services;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShoppingCart.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IProductService _productService;
 
-        public ProductsController(DataContext _context)
+        public ProductsController(IProductService productService)
         {
-            this._context = _context;
+            _productService = productService;
         }
+
         public async Task<IActionResult> Index(string searchString, string categorySlug = "", int p = 1)
         {
-
-
-             var products = from m in _context.Products
-                select m;
+            var products = await _productService.GetAllProductsAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.Name.ToLower()!.Contains(searchString.ToLower()));
-                return View(await products.ToListAsync());
+                products = products.Where(p => p.Name.ToLower().Contains(searchString.ToLower())).ToList();
+                return View(products);
             }
-
-            // if (!String.IsNullOrEmpty(categorySlug))
-            // {
-            //     products = products.Where(s => s.Slug == categorySlug);
-            // }
-
-
 
             int pageSize = 10;
             ViewBag.PageNumber = p;
             ViewBag.PageRange = pageSize;
             ViewBag.CategorySlug = categorySlug;
-            
 
             if (categorySlug == "")
             {
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Products.Count() / pageSize);
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)products.Count() / pageSize);
 
-                return View(await _context.Products.OrderByDescending(p => p.Id).Skip((p - 1) * pageSize).Take(pageSize).ToListAsync());
+                return View(products.OrderByDescending(p => p.Id).Skip((p - 1) * pageSize).Take(pageSize).ToList());
             }
-            Category category = await _context.Categories.Where(c => c.Slug == categorySlug).FirstOrDefaultAsync();
+
+            Category category = await _productService.GetCategoryBySlugAsync(categorySlug);
 
             if (category == null)
             {
                 return RedirectToAction("Index");
-
             }
-            var productsByCategory = _context.Products.Where(p => p.Category.Id == category.Id);
+
+            var productsByCategory = await _productService.GetProductsByCategoryIdAsync((int)category.Id);
             ViewBag.TotalPages = (int)Math.Ceiling((decimal)productsByCategory.Count() / pageSize);
 
-            return View(await productsByCategory.OrderByDescending(p => p.Id).Skip((p - 1) * pageSize).Take(pageSize).ToListAsync());
-
-
+            return View(productsByCategory.OrderByDescending(p => p.Id).Skip((p - 1) * pageSize).Take(pageSize).ToList());
         }
     }
 }
-
-

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Data;
 using ShoppingCart.Infrastructure;
 using ShoppingCart.Models;
 using ShoppingCart.Models.ViewModels;

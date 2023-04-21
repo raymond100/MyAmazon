@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Models;
 
-namespace ShoppingCart.Infrastructure
+namespace ShoppingCart.Data
 {
     public class SeedData
     {

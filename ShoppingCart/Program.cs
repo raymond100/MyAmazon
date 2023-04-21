@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI;
-using ShoppingCart.Infrastructure;
+using ShoppingCart.Data;
 using ShoppingCart.Models;
+using ShoppingCart.Repository;
+using ShoppingCart.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Configuration;
 
@@ -19,8 +21,13 @@ else
         options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 }    
 
-// builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//     .AddEntityFrameworkStores<DataContext>();
+  // register the repository and service classes
+builder.Services.AddScoped<IOrderRepository, EfOrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProductRepository, EfProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddDistributedMemoryCache();
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Models;
 using System.Security.Cryptography.X509Certificates;
 
-namespace ShoppingCart.Infrastructure
+namespace ShoppingCart.Data
 {
     public class DataContext : IdentityDbContext<AppUser>
     {
@@ -11,6 +11,7 @@ namespace ShoppingCart.Infrastructure
         {}
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
     }
 }

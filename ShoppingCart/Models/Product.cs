@@ -34,6 +34,9 @@ namespace ShoppingCart.Models
         [NotMapped]
         [FileExtension]
         public IFormFile? ImageUpload { get; set; }
+
+        // public bool IsAvailable { get; set; }
+        // public int StockQuantity { get; set; }
         
     }
 }
