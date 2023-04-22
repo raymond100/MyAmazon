@@ -76,7 +76,7 @@
                                 <strong>@User.Identity.Name</strong>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                                <a class="btn btn-vendor">Become a Vendor</a>
+                                <a class="btn btn-vendor" data-bs-toggle="modal" data-bs-target="#vendorModal">Become a Vendor</a>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
                                 <li>
@@ -95,26 +95,43 @@
                 @RenderBody()
             </div>
         </div>
-
-
-        @* <main role="main" class="pb-3">
-        <div class="row">
-        <div class="col-3">
-        <vc:categories />
-
-        <div class="bg-success mt-3 p-3 text-white">
-        <vc:small-cart />
-        </div>
-        </div>
-
-        <div class="col">
-        <partial name="_NotificationPartial" />
-        @RenderBody()
-        </div>
-
-        </div>
-        </main> *@
     </div>
+
+    <!-- Modal 1 -->
+<div class="modal fade" id="vendorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Vendor Subscription</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body bg-image">        
+        <div class="card my-4 card-vendor mx-auto">
+            <div class="card-body d-flex">
+                <div class="col-9">
+                    <h4> Vendor Subscriber can manage their own store when they have been approved.</h4>
+                </div>
+                <div class="col-3">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ffc107" class="bi bi-bag-check mt-4 mx-4" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+       
+      </div>
+      <div class="modal-footers">
+        <div class="d-grid gap-2 mx-5 my-3">
+            <a class="btn btn-dark a-text" type="button" href="/checkout">20,000$US/year</a>
+        </div>
+        <div class="mx-5 my-3">
+            <small class="f-11">By subscribing, you agree to our Vendor <a href="">Terms of Service.</a> Subscriptions auto-renew until canceled, as described in the Terms. Cancel anytime. A verified phone number is required to subscribe. If you've subscribed on another platform, manage your subscription through that platform.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -134,6 +151,30 @@
         background-color: #ffc107;
         border-color: #ffc107;
     }
+
+   .card-vendor {
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        width: 80%;
+   }
+
+   .bg-image{
+        background: #FFC108;
+        background: linear-gradient(180deg, #FFC108, #FFFFFF);
+   }
+
+   .btn-dark{
+        border-radius: 9999px;
+   }
+
+   .f-11{
+        font-size:11px;
+        line-height: 1px;
+   }
+
+   .a-text, .a-text:hover{
+        color: #FFF !important;
+   }
+
 </style>
 
 
