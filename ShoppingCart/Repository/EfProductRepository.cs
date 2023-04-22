@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Data;
 using ShoppingCart.Models;
+using ShoppingCart.Repository.BankSystem.BankSystemModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,27 @@ namespace ShoppingCart.Repository
         public async Task<List<Product>> GetAllProductsAsync()
         {
             return await _dbContext.Products.ToListAsync();
+        }
+        public Status ApproveProduct(long productId)
+        {
+
+            Product product = _dbContext.Products.Single(u => u.Id.Equals(productId));
+            product.IsApproved = true;
+            _dbContext.SaveChanges();
+            Status status = new Status();
+            status.StatusCode = 1;
+            status.Message = "Product Approved";
+            return status;
+
+        }
+
+        public async Task<List<Product>> GetAllApprovedProductsAsync()
+        {
+            return await _dbContext.Products.Where(p => p.IsApproved == true).ToListAsync();
+        }
+        public async Task<List<Product>> GetAllNonApprovedProductsAsync()
+        {
+            return await _dbContext.Products.Where(p => p.IsApproved == false).ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(long productId)

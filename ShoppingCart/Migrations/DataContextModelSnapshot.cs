@@ -164,6 +164,9 @@ namespace ShoppingCart.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsAproved")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -360,6 +363,9 @@ namespace ShoppingCart.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("INTEGER");

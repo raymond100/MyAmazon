@@ -11,8 +11,8 @@ using ShoppingCart.Data;
 namespace ShoppingCart.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230422192819_New_schema")]
-    partial class New_schema
+    [Migration("20230422214606_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,6 +165,9 @@ namespace ShoppingCart.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAproved")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
@@ -363,6 +366,9 @@ namespace ShoppingCart.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("INTEGER");
