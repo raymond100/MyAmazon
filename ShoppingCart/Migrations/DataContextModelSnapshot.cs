@@ -377,11 +377,108 @@ namespace ShoppingCart.Migrations
                     b.Property<int>("StockQuantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Vendor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ShoppingCart.Models.UserAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CVV")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameOnCard")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UsersAccounts");
+                });
+
+            modelBuilder.Entity("ShoppingCart.Repository.BankSystem.BankSystemModels.Account", b =>
+                {
+                    b.Property<int>("AccountID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AccountStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CVV")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("CurrentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("IntialAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameOnCard")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AccountID");
+
+                    b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("ShoppingCart.Repository.BankSystem.BankSystemModels.Transaction", b =>
+                {
+                    b.Property<int>("TransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TransactionNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TransactionStatus")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TransactionValue")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TransactionId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -22,7 +22,8 @@ namespace ShoppingCart.Data
                             Description = "Juicy apples",
                             Price = 1.50m,
                             Category = fruits,
-                            Image = "apples.jpg"
+                            Image = "apples.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -31,7 +32,8 @@ namespace ShoppingCart.Data
                             Description = "Fresh bananas",
                             Price = 3m,
                             Category = fruits,
-                            Image = "bananas.jpg"
+                            Image = "bananas.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -40,7 +42,8 @@ namespace ShoppingCart.Data
                             Description = "Juicy watermelon",
                             Price = 0.50m,
                             Category = fruits,
-                            Image = "watermelon.jpg"
+                            Image = "watermelon.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -49,7 +52,8 @@ namespace ShoppingCart.Data
                             Description = "Juicy grapefruit",
                             Price = 2m,
                             Category = fruits,
-                            Image = "grapefruit.jpg"
+                            Image = "grapefruit.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -58,7 +62,8 @@ namespace ShoppingCart.Data
                             Description = "White shirt",
                             Price = 5.99m,
                             Category = shirts,
-                            Image = "white shirt.jpg"
+                            Image = "white shirt.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -67,7 +72,8 @@ namespace ShoppingCart.Data
                             Description = "Black shirt",
                             Price = 7.99m,
                             Category = shirts,
-                            Image = "black shirt.jpg"
+                            Image = "black shirt.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -76,7 +82,8 @@ namespace ShoppingCart.Data
                             Description = "Yellow shirt",
                             Price = 11.99m,
                             Category = shirts,
-                            Image = "yellow shirt.jpg"
+                            Image = "yellow shirt.jpg",
+                            Vendor = "v1"
                         },
                         new Product
                         {
@@ -85,7 +92,8 @@ namespace ShoppingCart.Data
                             Description = "Grey shirt",
                             Price = 12.99m,
                             Category = shirts,
-                            Image = "grey shirt.jpg"
+                            Image = "grey shirt.jpg",
+                            Vendor = "v1"
                         }
                 );
 

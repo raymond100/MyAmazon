@@ -6,11 +6,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShoppingCart.Migrations
 {
     /// <inheritdoc />
-    public partial class New_Schema : Migration
+    public partial class New_schema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    AccountID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NameOnCard = table.Column<string>(type: "TEXT", nullable: false),
+                    CardNumber = table.Column<long>(type: "INTEGER", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CVV = table.Column<int>(type: "INTEGER", nullable: false),
+                    IntialAmount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    CurrentAmount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    AccountStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    PaymentType = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.AccountID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -94,6 +114,41 @@ namespace ShoppingCart.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    TransactionId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CardNumber = table.Column<long>(type: "INTEGER", nullable: false),
+                    TransactionNumber = table.Column<int>(type: "INTEGER", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TransactionStatus = table.Column<string>(type: "TEXT", nullable: false),
+                    TransactionValue = table.Column<decimal>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.TransactionId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    NameOnCard = table.Column<string>(type: "TEXT", nullable: false),
+                    CardNumber = table.Column<long>(type: "INTEGER", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CVV = table.Column<int>(type: "INTEGER", nullable: false),
+                    PaymentType = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersAccounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,6 +269,7 @@ namespace ShoppingCart.Migrations
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     CategoryId = table.Column<long>(type: "INTEGER", nullable: false),
                     Image = table.Column<string>(type: "TEXT", nullable: false),
+                    Vendor = table.Column<string>(type: "TEXT", nullable: false),
                     IsAvailable = table.Column<bool>(type: "INTEGER", nullable: false),
                     StockQuantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -365,6 +421,9 @@ namespace ShoppingCart.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Accounts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -384,6 +443,12 @@ namespace ShoppingCart.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "UsersAccounts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
