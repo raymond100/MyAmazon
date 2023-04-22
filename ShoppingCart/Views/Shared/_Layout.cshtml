@@ -41,8 +41,7 @@
                         <input class="btn btn-outline-light" type="submit" value="Search" />
                     </form>
                     
-                        @*<vc:small-cart />*@
-                        @* @await Component.InvokeAsync("SmallCart") *@
+                        @await Component.InvokeAsync("SmallCart")
                         @if (!User.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item px-2">

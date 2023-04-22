@@ -5,13 +5,20 @@ using ShoppingCart.Models.ViewModels;
 
 namespace ShoppingCart.Infrastructure.Components
 {
-    public class SmallCartViewComponent : ViewComponent
-    {
+  public class SmallCartViewComponent : ViewComponent
+{
+        private readonly Cart _cart;
+
+        public SmallCartViewComponent(Cart cart)
+        {
+            _cart = cart;
+        }
+
         public IViewComponentResult Invoke()
         {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
             SmallCartViewModel smallCartVM;
-            if (cart == null || cart.Count == 0)
+
+            if (_cart == null || _cart.CartItems.Count == 0)
             {
                 smallCartVM = null;
             }
@@ -19,19 +26,15 @@ namespace ShoppingCart.Infrastructure.Components
             {
                 smallCartVM = new SmallCartViewModel()
                 {
-                    NumberOfItems = cart.Sum(x => x.Quantity),
-                    TotalAmount = cart.Sum(x=>x.Quantity*x.Price),
-                    
-                    
+                    NumberOfItems = _cart.CartItems.Sum(x => x.Quantity),
+                    TotalAmount = _cart.CartItems.Sum(x => x.Quantity * x.Product.Price),
                 };
-               
             }
-            
 
             return View(smallCartVM);
         }
-
     }
+
 }
 
 

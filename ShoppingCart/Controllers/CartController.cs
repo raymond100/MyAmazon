@@ -26,30 +26,30 @@ namespace ShoppingCart.Controllers
             _productService = productService;
         }
 
-    public async Task<IActionResult> Index()
-{
-    List<CartItem> cartItems;
-
-    if (User.Identity.IsAuthenticated)
-    {
-        AppUser user = await _userManager.GetUserAsync(User);
-        Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
-                                .FirstOrDefaultAsync(c => c.UserId == user.Id);
-
-        if (userCart == null)
+        public async Task<IActionResult> Index()
         {
-            return View(new CartViewModel(new Cart()));
+            List<CartItem> cartItems;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                AppUser user = await _userManager.GetUserAsync(User);
+                Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
+                                        .FirstOrDefaultAsync(c => c.UserId == user.Id);
+
+                if (userCart == null)
+                {
+                    return View(new CartViewModel(new Cart()));
+                }
+
+                cartItems = userCart.CartItems;
+            }
+            else
+            {
+                cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            }
+
+            return View(new CartViewModel(new Cart { CartItems = cartItems }));
         }
-
-        cartItems = userCart.CartItems;
-    }
-    else
-    {
-        cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-    }
-
-    return View(new CartViewModel(new Cart { CartItems = cartItems }));
-}
 
 
 
@@ -137,58 +137,6 @@ namespace ShoppingCart.Controllers
         return Redirect(Request.Headers["Referer"].ToString());
     }
 
-
-
-
-    //     public async Task<IActionResult> Add(long id)
-    //     {
-    //         Product product = await _context.Products.FindAsync(id);
-    //         if (product == null)
-    //         {
-    //             return NotFound();
-    //         }
-
-    //         List<CartItem> cart;
-
-    //         if (User.Identity.IsAuthenticated)
-    //         {
-    //             AppUser user = await _userManager.GetUserAsync(User);
-    //             cart = _context.CartItems.Where(c => c.UserId == user.Id).ToList();
-
-    //             CartItem existingCartItem = cart.Where(c => c.id == id).FirstOrDefault();
-
-    //             if (existingCartItem == null)
-    //             {
-    //                 _context.CartItems.Add(new CartItem(product, user.Id));
-    //             }
-    //             else
-    //             {
-    //                 existingCartItem.Quantity += 1;
-    //             }
-
-    //             await _context.SaveChangesAsync();
-    //         }
-    //         else
-    //         {
-    //             cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-
-    //             CartItem cartItem = cart.Where(c => c.id == id).FirstOrDefault();
-
-    //             if (cartItem == null)
-    //             {
-    //                 cart.Add(new CartItem(product));
-    //             }
-    //             else
-    //             {
-    //                 cartItem.Quantity += 1;
-    //             }
-
-    //             HttpContext.Session.SetJson("Cart", cart);
-    //         }
-
-    //         TempData["Success"] = "The product has been added!";
-    //         return Redirect(Request.Headers["Referer"].ToString());
-    //     }
 
     //     public async Task<IActionResult> Decrease(long id)
     //     {

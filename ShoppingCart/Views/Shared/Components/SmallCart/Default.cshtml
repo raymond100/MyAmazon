@@ -5,6 +5,7 @@
     <a class="nav-link position-relative" asp-controller="Cart" asp-action="Index">
         <i class="bi bi-cart"></i>
         <span class="badge rounded-pill bg-warning position-absolute top-1 start-100 translate-middle">
+          
             @(Model != null ? Model.NumberOfItems : 0)
         </span>
         <span>Cart</span>
