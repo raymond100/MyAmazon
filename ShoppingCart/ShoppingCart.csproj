@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="ironpdf" Version="2023.4.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.15" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.15" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">

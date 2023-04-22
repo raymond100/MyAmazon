@@ -35,7 +35,7 @@
                                                 @* <select asp-for="SelectedOption" asp-items="@Model.Options" asp-route-id="@item.ProductId"  asp-action="addQuantity"></select> *@
                                                 <a class="btn btn-sm" asp-action="Decrease" asp-route-id="@item.Product.Id"><i class="bi bi-arrow-down-short"></i></a>
                                                     <span>@item.Quantity</span>
-                                                <a class="btn btn-sm" asp-action="Add" asp-route-id="@item.Product.Id"><i class="bi bi-arrow-up-short"></i></a>
+                                                <a class="btn btn-sm" asp-action="AddToCart" asp-route-id="@item.Product.Id"><i class="bi bi-arrow-up-short"></i></a>
                                                 </div>
                                                 <div class="col-sm-1 pipe">
                                                     |

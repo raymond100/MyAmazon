@@ -18,12 +18,14 @@ namespace ShoppingCart.Controllers
         private readonly DataContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
 
-        public CartController(DataContext context, UserManager<AppUser> userManager, IProductService productService)
+        public CartController(DataContext context, UserManager<AppUser> userManager, IProductService productService,ICartService cartService)
         {
             _context = context;
             _userManager = userManager;
             _productService = productService;
+            _cartService = cartService;
         }
 
         public async Task<IActionResult> Index()
@@ -138,108 +140,30 @@ namespace ShoppingCart.Controllers
     }
 
 
-    //     public async Task<IActionResult> Decrease(long id)
-    //     {
-    //         List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
-    //         CartItem cartItem = cart.Where(x => x.id == id).FirstOrDefault();
+        public async Task<IActionResult> Decrease(long id)
+        {
+            _cartService.DecreaseCartItemAsync((int)id);
 
-    //         if (cartItem.Quantity > 1)
-    //         {
-    //             --cartItem.Quantity;
-    //         }
-    //         else
-    //         {
-    //             cart.RemoveAll(x => x.id == id);
-    //         }
-
-    //         if (cart.Count == 0)
-    //         {
-    //             HttpContext.Session.Remove("Cart");
-    //         }
-    //         else
-    //         {
-    //             HttpContext.Session.SetJson("Cart", cart);
-    //         }
-
-    //         if (User.Identity.IsAuthenticated)
-    //         {
-    //             AppUser user = await _userManager.GetUserAsync(User);
-    //             CartItem existingCartItem = _context.CartItems.Where(c => c.id == id && c.UserId == user.Id).FirstOrDefault();
-
-    //             if (existingCartItem != null)
-    //             {
-    //                 if (existingCartItem.Quantity > 1)
-    //                 {
-    //                     --existingCartItem.Quantity;
-    //                 }
-    //                 else
-    //                 {
-    //                     _context.CartItems.Remove(existingCartItem);
-    //                 }
-
-    //                 await _context.SaveChangesAsync();
-    //             }
-    //         }
-
-    //         TempData["Success"] = "The Product has been Removed";
-    //         return Redirect(Request.Headers["Referer"].ToString());
-    //     }
+            TempData["Success"] = "The Product has been Removed";
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
 
 
-    //     public async Task<IActionResult> Remove(long id)
-    //     {
-    //         List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
-    //         CartItem cartItem = cart.Where(x => x.id == id).FirstOrDefault();
+        public async Task<IActionResult> Remove(long id)
+        {
+            _cartService.RemoveCartItemAsync((int) id);
 
-    //         if (cartItem != null)
-    //         {
-    //             cart.RemoveAll(x => x.id == id);
+            TempData["Error"] = "The product was not found in the cart.";
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
 
-    //             if (cart.Count == 0)
-    //             {
-    //                 HttpContext.Session.Remove("Cart");
-    //             }
-    //             else
-    //             {
-    //                 HttpContext.Session.SetJson("Cart", cart);
-    //             }
-
-    //             if (User.Identity.IsAuthenticated)
-    //             {
-    //                 AppUser user = await _userManager.GetUserAsync(User);
-    //                 CartItem existingCartItem = _context.CartItems.Where(c => c.id == id && c.UserId == user.Id).FirstOrDefault();
-
-    //                 if (existingCartItem != null)
-    //                 {
-    //                     _context.CartItems.Remove(existingCartItem);
-    //                     await _context.SaveChangesAsync();
-    //                 }
-    //             }
-
-    //             TempData["Success"] = "The product has been removed from the cart!";
-    //         }
-    //         else
-    //         {
-    //             TempData["Error"] = "The product was not found in the cart.";
-    //         }
-
-    //         return Redirect(Request.Headers["Referer"].ToString());
-    //     }
-
-    //     public async Task<IActionResult> Clear()
-    //     {
-    //         HttpContext.Session.Remove("Cart");
-
-    //         if (User.Identity.IsAuthenticated)
-    //         {
-    //             AppUser user = await _userManager.GetUserAsync(User);
-    //             _context.CartItems.RemoveRange(_context.CartItems.Where(c => c.UserId == user.Id));
-    //             await _context.SaveChangesAsync();
-    //         }
-
-    //         TempData["Success"] = "The cart has been cleared!";
-    //         return RedirectToAction("Index");
-    //     }        
+        public async Task<IActionResult> Clear()
+        {
+           
+            _cartService.ClearCartAsync();
+            TempData["Success"] = "The cart has been cleared!";
+            return RedirectToAction("Index");
+        }        
 
      }
 }

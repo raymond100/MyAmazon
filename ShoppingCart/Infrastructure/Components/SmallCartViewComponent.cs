@@ -1,38 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Data;
+using ShoppingCart.Infrastructure;
 using ShoppingCart.Models;
+using ShoppingCart.Services;
 using ShoppingCart.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace ShoppingCart.Infrastructure.Components
 {
   public class SmallCartViewComponent : ViewComponent
 {
-        private readonly Cart _cart;
+      
 
-        public SmallCartViewComponent(Cart cart)
+        private readonly ICartService _cartService;
+      
+       
+        public SmallCartViewComponent(ICartService cartService)
         {
-            _cart = cart;
+            _cartService = cartService;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             SmallCartViewModel smallCartVM;
 
-            if (_cart == null || _cart.CartItems.Count == 0)
+            List<CartItem> cartItems = await _cartService.GetCartItemsAsync();
+
+            smallCartVM = new SmallCartViewModel()
             {
-                smallCartVM = null;
-            }
-            else
-            {
-                smallCartVM = new SmallCartViewModel()
-                {
-                    NumberOfItems = _cart.CartItems.Sum(x => x.Quantity),
-                    TotalAmount = _cart.CartItems.Sum(x => x.Quantity * x.Product.Price),
-                };
-            }
+                NumberOfItems = cartItems.Sum(x => x.Quantity),
+                TotalAmount = cartItems.Sum(x => x.Quantity * x.Product.Price),
+            };
 
             return View(smallCartVM);
         }
+
     }
 
 }
