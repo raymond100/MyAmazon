@@ -130,6 +130,7 @@ namespace ShoppingCart.Areas.Identity.Pages.Account
                     {
                         // Create the "Customer" role if it doesn't exist
                         await _roleManager.CreateAsync(new IdentityRole("Customer"));
+                        
                         role = await _roleManager.FindByNameAsync("Customer");
                     }
 

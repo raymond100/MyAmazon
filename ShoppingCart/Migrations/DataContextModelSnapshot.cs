@@ -437,7 +437,7 @@ namespace ShoppingCart.Migrations
 
             modelBuilder.Entity("ShoppingCart.Models.CartItem", b =>
                 {
-                    b.HasOne("ShoppingCart.Models.Cart", "Cart")
+                    b.HasOne("ShoppingCart.Models.Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -452,8 +452,6 @@ namespace ShoppingCart.Migrations
                     b.HasOne("ShoppingCart.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Cart");
 
                     b.Navigation("Product");
 
