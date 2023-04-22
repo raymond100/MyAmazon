@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
+
     builder.Services.AddDbContext<DataContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("LiteDbConnection")));
 }
