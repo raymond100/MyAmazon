@@ -7,6 +7,7 @@ using ShoppingCart.Repository;
 using ShoppingCart.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Configuration;
+using ShoppingCart.Repository.BankSystem;
 //using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 
@@ -22,19 +23,27 @@ else
 {
     builder.Services.AddDbContext<DataContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
-}    
+}
 
-  // register the repository and service classes
-builder.Services.AddScoped<IOrderRepository, EfOrderRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+// register the repository and service classes
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, EfProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
-builder.Services.AddScoped<ICartItemService, CartItemService>();
+builder.Services.AddScoped<IOrderRepository, EfOrderRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICartItemService, CartItemService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IBank, Bank>();
+
 builder.Services.AddScoped<Cart>();
+
 
 
 builder.Services.AddDistributedMemoryCache();

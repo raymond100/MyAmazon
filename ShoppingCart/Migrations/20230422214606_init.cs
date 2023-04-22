@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShoppingCart.Migrations
 {
     /// <inheritdoc />
-    public partial class New_schema : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +51,7 @@ namespace ShoppingCart.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Occupation = table.Column<string>(type: "TEXT", nullable: true),
+                    IsAproved = table.Column<bool>(type: "INTEGER", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -270,6 +271,7 @@ namespace ShoppingCart.Migrations
                     CategoryId = table.Column<long>(type: "INTEGER", nullable: false),
                     Image = table.Column<string>(type: "TEXT", nullable: false),
                     Vendor = table.Column<string>(type: "TEXT", nullable: false),
+                    IsApproved = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsAvailable = table.Column<bool>(type: "INTEGER", nullable: false),
                     StockQuantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },

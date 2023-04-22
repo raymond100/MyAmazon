@@ -2,6 +2,8 @@ using ShoppingCart.Repository;
 using ShoppingCart.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Repository.BankSystem.BankSystemModels;
 
 namespace ShoppingCart.Services
 {
@@ -19,7 +21,7 @@ namespace ShoppingCart.Services
         public async Task<List<Product>> GetAllProductsAsync()
         {
             return await _productRepository.GetAllProductsAsync();
-        }
+        } 
 
         public async Task<Product> GetProductByIdAsync(long id)
         {
@@ -76,6 +78,20 @@ namespace ShoppingCart.Services
             return products;
         }
 
+        public Task<List<Product>> GetAllApprovedProductsAsync()
+        {
+            return _productRepository.GetAllApprovedProductsAsync();
+        }
+
+        public Task<List<Product>> GetAllNonApprovedProductsAsync()
+        {
+            return _productRepository.GetAllNonApprovedProductsAsync();
+        }
+
+        public Status ApproveProduct(long productId)
+        {
+           return _productRepository.ApproveProduct(productId);
+        }
     }
 
 }

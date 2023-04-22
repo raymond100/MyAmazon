@@ -19,7 +19,9 @@ namespace ShoppingCart.Controllers
 
         public async Task<IActionResult> Index(string searchString, string categorySlug = "", int p = 1)
         {
-            var products = await _productService.GetAllProductsAsync();
+            //  var products = await _productService.GetAllProductsAsync();  changed
+
+            var products = await _productService.GetAllApprovedProductsAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {

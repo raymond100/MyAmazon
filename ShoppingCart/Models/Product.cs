@@ -39,6 +39,8 @@ namespace ShoppingCart.Models
 
         public string  Vendor { get; set; }
 
+        public bool IsApproved { get; set; }
+
         public bool IsAvailable { get; set; }
         public int StockQuantity { get; set; }
 
