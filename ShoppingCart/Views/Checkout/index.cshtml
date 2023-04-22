@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <main>
+        <div class="container-fluid mx-0 px-0">
+            <div class="row">
+                <div class="col-md-6 bg-color vh-100 mx-0"></div>
+                <div class="col-md-6">
+                    <div class="row mt-3">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <h5 class="mb-3">Pay with card</h5>
+                            <form>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cardInfo" class="form-label">Card information</label>
+                                <input type="text" class="form-control" id="cardInfo">
+                                 <div class="d-flex">
+                                    <input type="text" class="form-control" id="month" name="month" placeholder="MM/YY">
+                                    <input type="text" class="form-control" id="cvc" name="cvc" placeholder="CVC">
+                                 </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nameOnCard" class="form-label">Name on card</label>
+                                <input type="text" class="form-control" id="nameOnCard" >
+                            </div>
+                            <button type="submit" class="btn btn-primary">Subscribe</button>
+                            </form>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </main>
+</body>
+</html>
+
+<style>
+    .bg-color{
+        background: #FFC108;
+        background: linear-gradient(180deg, #FFC108, #FFFFFF);
+    }
+</style>
