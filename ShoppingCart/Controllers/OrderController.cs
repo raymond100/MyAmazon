@@ -9,11 +9,11 @@ namespace ShoppingCart.Controllers
     {
         public IActionResult Index()
         {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            // List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
-            CartViewModel cartVM = new(cart); 
+            // CartViewModel cartVM = new(cart); 
 
-           return View(cartVM);
+           return View();
         }
 
     }

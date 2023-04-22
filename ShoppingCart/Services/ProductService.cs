@@ -21,12 +21,12 @@ namespace ShoppingCart.Services
             return await _productRepository.GetAllProductsAsync();
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(long id)
         {
             return await _productRepository.GetProductByIdAsync(id);
         }
 
-        public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
+        public async Task<List<Product>> GetProductsByCategoryIdAsync(long categoryId)
         {
             var products = await _productRepository.GetProductsByCategoryIdAsync(categoryId);
             return products.ToList();
@@ -42,7 +42,7 @@ namespace ShoppingCart.Services
             return await _productRepository.UpdateProductAsync(product);
         }
 
-        public async Task DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(long id)
         {
             await _productRepository.DeleteProductAsync(id);
         }
@@ -72,7 +72,7 @@ namespace ShoppingCart.Services
                 return null;
             }
 
-            var products = await _productRepository.GetProductsByCategoryIdAsync((int)category.Id);
+            var products = await _productRepository.GetProductsByCategoryIdAsync((long)category.Id);
             return products;
         }
 

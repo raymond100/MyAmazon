@@ -7,6 +7,8 @@ using ShoppingCart.Repository;
 using ShoppingCart.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Configuration;
+//using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,8 @@ builder.Services.AddScoped<IProductRepository, EfProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+builder.Services.AddScoped<ICartItemService, CartItemService>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -37,6 +41,9 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
 });
+
+//services.AddControllers().AddNewtonsoftJson();
+
 
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
@@ -84,9 +91,27 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Products}/{action=Index}/{id?}");
     endpoints.MapRazorPages();
     endpoints.MapControllerRoute(
-        name: "Areas",
+        name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "add-to-cart",
+        pattern: "Cart/AddToCart/{id:int}",
+        defaults: new { controller = "Cart", action = "Add" });
+    endpoints.MapControllerRoute(
+        name: "decrease-from-cart",
+        pattern: "Cart/Decrease/{id:int}",
+        defaults: new { controller = "Cart", action = "Decrease" });
+    endpoints.MapControllerRoute(
+        name: "remove-from-cart",
+        pattern: "Cart/Remove/{id:int}",
+        defaults: new { controller = "Cart", action = "Remove" });
+    endpoints.MapControllerRoute(
+        name: "clear-cart",
+        pattern: "Cart/Clear",
+        defaults: new { controller = "Cart", action = "Clear" });
 });
+
+
 
 
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();

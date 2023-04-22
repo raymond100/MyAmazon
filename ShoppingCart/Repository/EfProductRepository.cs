@@ -9,11 +9,13 @@ namespace ShoppingCart.Repository
 {
     public class EfProductRepository : IProductRepository
     {
+        private readonly ILogger<EfProductRepository> _logger;
         private readonly DataContext _dbContext;
 
-        public EfProductRepository(DataContext dbContext)
+        public EfProductRepository(DataContext context, ILogger<EfProductRepository> logger)
         {
-            _dbContext = dbContext;
+            _dbContext = context;
+            _logger = logger;
         }
 
         public async Task<List<Product>> GetAllProductsAsync()
@@ -21,8 +23,9 @@ namespace ShoppingCart.Repository
             return await _dbContext.Products.ToListAsync();
         }
 
-        public async Task<Product> GetProductByIdAsync(int productId)
+        public async Task<Product> GetProductByIdAsync(long productId)
         {
+            _logger.LogInformation($"GetProductByIdAsync called with id: {productId}");
             return await _dbContext.Products.FindAsync(productId);
         }
 
@@ -40,7 +43,7 @@ namespace ShoppingCart.Repository
             return product;
         }
 
-        public async Task DeleteProductAsync(int productId)
+        public async Task DeleteProductAsync(long productId)
         {
             var product = await _dbContext.Products.FindAsync(productId);
             _dbContext.Products.Remove(product);
@@ -53,7 +56,7 @@ namespace ShoppingCart.Repository
                 return await _dbContext.Products.Where(p => p.CategoryId == category.Id).ToListAsync();
             }
 
-        public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
+        public async Task<List<Product>> GetProductsByCategoryIdAsync(long categoryId)
         {
             return await _dbContext.Products
                 .Where(p => p.CategoryId == categoryId)

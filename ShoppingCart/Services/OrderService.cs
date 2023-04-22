@@ -13,7 +13,7 @@ namespace  ShoppingCart.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<Order> GetOrderByIdAsync(long id)
         {
             return await _orderRepository.GetOrderByIdAsync(id);
         }
@@ -35,7 +35,7 @@ namespace  ShoppingCart.Services
             return order;
         }
 
-        public async Task DeleteOrderAsync(int id)
+        public async Task DeleteOrderAsync(long id)
         {
             await _orderRepository.DeleteOrderByIdAsync(id);
         }

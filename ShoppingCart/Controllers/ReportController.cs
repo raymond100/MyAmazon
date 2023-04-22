@@ -13,15 +13,15 @@ namespace ShoppingCart.Controllers
     public class ReportController : Controller{
     public IActionResult Index()
     {
-            List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+            // List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
-            CartViewModel cartVM = new(cart);
+            // CartViewModel cartVM = new(cart);
         
-            ReportViewModel reportVm = new(cartVM);
+            // ReportViewModel reportVm = new(cartVM);
              
             //ViewData["data"] = reportVm;
 
-            return View(reportVm);
+            return View();
     }
 
       

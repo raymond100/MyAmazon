@@ -25,7 +25,7 @@ namespace ShoppingCart.Repository
                 .ToListAsync();
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<Order> GetOrderByIdAsync(long id)
         {
             return await _context.Orders
                 .Include(o => o.OrderItems)
@@ -53,7 +53,7 @@ namespace ShoppingCart.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteOrderByIdAsync(int id)
+        public async Task DeleteOrderByIdAsync(long id)
         {
             var order = await GetOrderByIdAsync(id);
             if (order != null)

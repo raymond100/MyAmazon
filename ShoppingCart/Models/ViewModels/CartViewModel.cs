@@ -1,51 +1,20 @@
 ﻿
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ShoppingCart.Models;
+using ShoppingCart.Models.ViewModels;
 
 namespace ShoppingCart.Models.ViewModels
 {
     public class CartViewModel
     {
+        public Cart Cart { get; set; }
 
-        public List<CartItem>  CartItems { get; set; }
-
-        public string SelectedOption { get; set; }
-
-        public List<SelectListItem> Options { get; set; }
-
-        public CartViewModel(List<CartItem> cartItems){
-            CartItems = cartItems;
-        }
-        private decimal total;
-
-        private int NumberOfItemsCount;
-
-        public int NumberOfItems
+        public CartViewModel(Cart cart)
         {
-            get
-            {
-              return CartItems.Sum(x => x.Quantity);  
-            }
+            Cart = cart;
 
-            set
-            {
-                NumberOfItemsCount = NumberOfItems;
-            }
         }
-    
-        public decimal GrandTotal
-        { 
-            get 
-            {
-                return CartItems.Sum(x => x.Quantity * x.Price);
-            }
-
-            set
-            {
-                total = GrandTotal;
-            }
-            
-
-         }
-
     }
+
+
 }

@@ -12,145 +12,111 @@
 </head>
 <body>
     <header>
-        @* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShoppingCart</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="/">
+                    <i class="bi bi-shop"></i>
+                    <span>My Amazon</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link active" href="/products" aria-current="page">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" href="#">Shop</a>
                         </li>
-                        @if (User.Identity?.IsAuthenticated ?? false)
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Deals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Services</a>
+                        </li>
+                    
+                    <form class="d-flex" asp-controller="Products" asp-action="Index">
+                        <input class="form-control me-2" type="text" name="SearchString" placeholder="Search" aria-label="Search">
+                        <input class="btn btn-outline-light" type="submit" value="Search" />
+                    </form>
+                    
+                        @*<vc:small-cart />*@
+                        @* @await Component.InvokeAsync("SmallCart") *@
+                        @if (!User.Identity?.IsAuthenticated ?? false)
                         {
-                            <li class="nav-item">
-                                <a class="btn btn-primary" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
+                            <li class="nav-item px-2">
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="btn btn-danger" asp-controller="Account" asp-action="Logout">Hi @User.Identity.Name, Logout</a>
-                            </li>
-                            @if(User.IsInRole("Admin") || User.IsInRole("Editor"))
-                            {
-                                <li class="nav-item">
-                                <a class="btn btn-primary" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
-                                </li>
-                            }
-                          
                         }
-                          else
-                            {
-                                <li class="nav-item">
-                                <a class="btn btn-success" asp-controller="Account" asp-action="Login">Log in</a>
-                                </li>
-                            }
                     </ul>
                 </div>
             </div>
-        </nav> *@
-        <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">My Amazon</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="/products" aria-current="page">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Shop</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Deals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
-        </li>
-      </ul>
-      <form class="d-flex" asp-controller="Products" asp-action="Index">
-        <input class="form-control me-2" type="text" name="SearchString" placeholder="Search" aria-label="Search">
-        <input class="btn btn-outline-light" type="submit" value="Search" />
-      </form>
-      <ul class="navbar-nav">
-         <vc:small-cart />
-         @if (!User.Identity?.IsAuthenticated ?? false){
-        <li class="nav-item px-2">
-          <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
-        </li>
-         }
-        @* <partial name="_LoginPartial" /> *@
-      </ul>
-    </div>
-  </div>
-</nav>
-</header>
+        </nav>
+    </header>
 
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <!-- Sidebar -->
-            <div class="d-flex flex-column flex-shrink-0 bg-light">
-            <a asp-controller="Products" asp-action="Index"  class="d-flex align-items-center justify-content-center p-3 mb-3 link-dark text-decoration-none border-bottom">
-                <span class="fs-5 fw-semibold">Categories</span>
-            </a>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <vc:categories />
-            </ul>
-           
-            @if (User.Identity?.IsAuthenticated ?? false){
-            <hr>
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2">
-                <strong>@User.Identity.Name</strong>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <a class="btn btn-vendor">Become a Vendor</a>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
-                <li><a class="dropdown-item
-                    href="#">Orders</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">Sign out</a></li>
-            </ul>
-            </div>
-              }
-            </div>
-
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
-    </div>
-
-   
-    @* <main role="main" class="pb-3">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-3">
-                <vc:categories />
+            <div class="col-md-3">
+                <!-- Sidebar -->
+                <div class="d-flex flex-column flex-shrink-0 bg-light">
+                    <a asp-controller="Products" asp-action="Index" class="d-flex align-items-center justify-content-center p-3 mb-3 link-dark text-decoration-none border-bottom">
+                        <span class="fs-5 fw-semibold">Categories</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        @*<vc:categories />*@
+                        @await Component.InvokeAsync("Categories")
+                    </ul>
 
-                <div class="bg-success mt-3 p-3 text-white">
-                    <vc:small-cart />
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <hr>
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2">
+                                <strong>@User.Identity.Name</strong>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                <a class="btn btn-vendor">Become a Vendor</a>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
+                                <li>
+                                    <a class="dropdown-item
+                                   href="#">Orders</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">Sign out</a></li>
+                            </ul>
+                        </div>
+                    }
                 </div>
-            </div>
 
-            <div class="col">
-                <partial name="_NotificationPartial" />
+            </div>
+            <div class="col-md-9">
                 @RenderBody()
             </div>
+        </div>
+
+
+        @* <main role="main" class="pb-3">
+        <div class="row">
+        <div class="col-3">
+        <vc:categories />
+
+        <div class="bg-success mt-3 p-3 text-white">
+        <vc:small-cart />
+        </div>
+        </div>
+
+        <div class="col">
+        <partial name="_NotificationPartial" />
+        @RenderBody()
+        </div>
 
         </div>
-    </main> *@
-</div>
+        </main> *@
+    </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -161,18 +127,15 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Production version, optimized for size and speed -->
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 <style>
-    .btn-vendor{
+    .btn-vendor {
         color: #000 !important;
         background-color: #ffc107;
         border-color: #ffc107;
     }
-   
 </style>
 
-                       
-       
+

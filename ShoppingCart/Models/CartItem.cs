@@ -2,34 +2,57 @@
 {
     public class CartItem
     {
-        public long ProductId { get; set; }
-        public string ProductName { get; set; }
+        public int Id { get; set; }
+        //public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
+        //public string UserId { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
 
+        public virtual Product Product { get; set; }
+        public virtual AppUser User { get; set; } 
+        public int CartId { get; set; } 
+        
+        // Additional properties for display in the view
+        public string Image { get { return Product?.Image ?? ""; } }
+        public string ProductName { get { return Product?.Name ?? ""; } }
+        public decimal Price { get { return Product?.Price ?? 0; } }
 
+    public CartItem()
+    {
+       
+    }
 
-        public decimal Total
-        {
-            get { return  Quantity* Price; }
-        }
+     public CartItem(Product product)
+    {
+        Product = product;
+        Quantity = 1; // set default quantity to 1
+    }
 
-        public string Image { get; set; }
+    // public CartItem(Product product, String userId)
+    // {
+    //     Product = product;
+    //     UserId = userId;
+    // }
 
-        public CartItem()
-        {
+    public CartItem(Product product, int quantity = 1)
+    {
+        Product = product;
+        Quantity = quantity;
+    }
 
-        }
+    public CartItem(Product product, int cartId, int quantity = 1)
+    {
+        Product = product;
+        Quantity = quantity;
+        CartId = cartId;
+    }
 
-        public CartItem(Product product)
-        {
-            ProductId = product.Id;
-            ProductName = product.Name;
-            Price= product.Price;
-            Quantity = 1;
-            Image=product.Image;
+    public decimal Subtotal
+    {
+        get { return (Product != null && Quantity > 0) ? Quantity * Product.Price : 0; }
+    }
 
-        }
 
     }
 }
