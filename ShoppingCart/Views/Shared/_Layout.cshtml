@@ -78,6 +78,10 @@
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                                 <a class="btn btn-vendor" data-bs-toggle="modal" data-bs-target="#vendorModal">Become a Vendor</a>
                                 <li><hr class="dropdown-divider"></li>
+                                      @* should show base only for admin *@
+                                     <li><a class="dropdown-item" href="/admin">Administration</a></li>
+                                      @* should show base only for vendor *@
+                                     <li><a class="dropdown-item" href="/ManagingProducts">My store</a></li>
                                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
                                 <li>
                                     <a class="dropdown-item

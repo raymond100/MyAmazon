@@ -33,6 +33,7 @@ namespace ShoppingCart.Services
                 if(user == null){
                     return cartItems;
                 }
+                
                 Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
                                     .FirstOrDefaultAsync(c => c.UserId == user.Id);
 
