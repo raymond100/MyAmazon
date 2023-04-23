@@ -140,7 +140,7 @@ namespace ShoppingCart.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
                     NameOnCard = table.Column<string>(type: "TEXT", nullable: false),
                     CardNumber = table.Column<long>(type: "INTEGER", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),

@@ -21,5 +21,10 @@ namespace ShoppingCart.Services
          return _userRepository.ApproveUser(UserId);    
             
         }
+
+        public Status SaveUserAccount(UserAccount Account)
+        {
+            return _userRepository.SaveUserAccount(Account);
+        }
     }
 }

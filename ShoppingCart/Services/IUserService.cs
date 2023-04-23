@@ -7,5 +7,6 @@ namespace ShoppingCart.Services
     {
         public List<AppUser> GetAllNonApprovedUsers();
         public Status ApproveUser(string UserId);
+        public Status SaveUserAccount(UserAccount Account);
     }
 }

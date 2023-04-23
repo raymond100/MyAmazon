@@ -28,5 +28,14 @@ namespace ShoppingCart.Repository
             return list;
         }
 
+        public Status SaveUserAccount(UserAccount account)
+        {
+            Status status = new Status();
+            _context.UsersAccounts.Add(account);
+            _context.SaveChanges();
+            status.Message = "Account Saved";
+            status.StatusCode=1;
+            return status;
+        }
     }
 }

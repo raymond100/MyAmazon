@@ -11,7 +11,7 @@ using ShoppingCart.Data;
 namespace ShoppingCart.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230422214606_init")]
+    [Migration("20230423204255_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -419,8 +419,9 @@ namespace ShoppingCart.Migrations
                     b.Property<int>("PaymentType")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
