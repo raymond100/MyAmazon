@@ -29,10 +29,11 @@ namespace ShoppingCart.Services
             if (_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 AppUser user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-                if(user == null)
-                {
+
+                if(user == null){
                     return cartItems;
                 }
+                
                 Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
                                     .FirstOrDefaultAsync(c => c.UserId == user.Id);
 

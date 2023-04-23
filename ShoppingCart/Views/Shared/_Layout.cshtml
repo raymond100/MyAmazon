@@ -15,7 +15,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShoppingCart</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Products" asp-action="Index">ShoppingCart</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -78,6 +78,10 @@
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                                 <a class="btn btn-vendor" data-bs-toggle="modal" data-bs-target="#vendorModal">Become a Vendor</a>
                                 <li><hr class="dropdown-divider"></li>
+                                      @* should show base only for admin *@
+                                     <li><a class="dropdown-item" href="/admin">Administration</a></li>
+                                      @* should show base only for vendor *@
+                                     <li><a class="dropdown-item" href="/vendor">My store</a></li>
                                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
                                 <li>
                                     <a class="dropdown-item

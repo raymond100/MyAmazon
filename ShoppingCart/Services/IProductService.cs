@@ -20,6 +20,6 @@ namespace ShoppingCart.Services
         Task<List<Product>> GetProductsByCategorySlugAsync(string categorySlug);
         Task<Category> GetCategoryBySlugAsync(string slug);
         Task<List<Product>> GetProductsByCategoryIdAsync(long categoryId);
-
+        Task<List<Product>> GetAllProductsAsyncByVendorId(String vendorId);
     }
 }

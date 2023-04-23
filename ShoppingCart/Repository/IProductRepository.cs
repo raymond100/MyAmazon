@@ -19,5 +19,6 @@ namespace ShoppingCart.Repository
         Task DeleteProductAsync(long productId);
         Task<List<Product>> GetProductsByCategorySlugAsync(string slug);
         Task<List<Product>> GetProductsByCategoryIdAsync(long categoryId);
+        Task<List<Product>> GetAllProductsAsyncByVendorId(String vendorId);
     }
 }

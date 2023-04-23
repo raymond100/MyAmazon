@@ -5,8 +5,11 @@ namespace ShoppingCart.Services
 {
     public interface IUserService
     {
-        public List<AppUser> GetAllNonApprovedUsers();
+        //Task<List<AppUser>> GetNonApprovedUsers();
         public Status ApproveUser(string UserId);
+
         public Status SaveUserAccount(UserAccount Account);
+
+        Task<List<AppUser>> GetAllNonApprovedUsers();
     }
 }

@@ -92,6 +92,11 @@ namespace ShoppingCart.Services
         {
            return _productRepository.ApproveProduct(productId);
         }
+
+         public Task<List<Product>> GetAllProductsAsyncByVendorId(String vendorId)
+        {
+            return _productRepository.GetAllProductsAsyncByVendorId(vendorId);
+        }
     }
 
 }

@@ -1,14 +1,19 @@
 ﻿using ShoppingCart.Data;
 using ShoppingCart.Models;
 using ShoppingCart.Repository.BankSystem.BankSystemModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShoppingCart.Repository
 {
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
-        public UserRepository(DataContext context) {
+        private readonly UserManager<AppUser> _userManager;
+
+        public UserRepository(DataContext context, UserManager<AppUser> userManager) {
             _context = context;
+            _userManager = userManager;
         }
 
         public Status ApproveUser(string UserId)
@@ -22,12 +27,27 @@ namespace ShoppingCart.Repository
             return status;
         }
 
-        public  List<AppUser> GetAllNonApprovedUsers()
+       public async Task<List<AppUser>> GetAllNonApprovedUsers()
         {
-           List<AppUser> list =  _context.Users.Where(u=>u.IsAproved == false).ToList();
-            return list;
-        }
+            var users = await _context.Users
+                .Where(u => !u.IsAproved)
+                .ToListAsync();
 
+            foreach (var user in users)
+            {
+                if(user != null){
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    user.Roles = new List<IdentityUserRole<string>>();
+                    foreach (var role in roles)
+                    {
+                        user.Roles.Add(new IdentityUserRole<string> { RoleId = role });
+                    }
+                }
+            }
+
+            return users;
+        }
         public Status SaveUserAccount(UserAccount account)
         {
             Status status = new Status();
