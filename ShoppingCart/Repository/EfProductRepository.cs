@@ -83,7 +83,12 @@ namespace ShoppingCart.Repository
             return await _dbContext.Products
                 .Where(p => (p.CategoryId == categoryId) && (p.IsApproved == true))
                 .ToListAsync();
+        }
 
+        public async Task<List<Product>> GetAllProductsAsyncByVendorId(string vendorId)
+        {
+            var products = await _dbContext.Products.Include(p => p.Category).Where(p => p.VendorId == vendorId).ToListAsync();
+            return products;
         }
 
     }

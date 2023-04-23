@@ -106,7 +106,7 @@ namespace ShoppingCart.Data
                             Price = 1.50m,
                             Category = fruits,
                             Image = "apples.jpg",
-                            Vendor = vendor1,
+                            VendorId = vendor1.Id, 
                             IsApproved = true,
                             IsAvailable = true,
                             StockQuantity = 100
@@ -119,7 +119,7 @@ namespace ShoppingCart.Data
                             Price = 3m,
                             Category = fruits,
                             Image = "bananas.jpg",
-                            Vendor = vendor2,
+                            VendorId = vendor2.Id,
                             IsApproved = true,
                             IsAvailable = true,
                             StockQuantity = 50
@@ -132,7 +132,7 @@ namespace ShoppingCart.Data
                             Price = 0.50m,
                             Category = fruits,
                             Image = "watermelon.jpg",
-                            Vendor = vendor2,
+                            VendorId = vendor2.Id,
                             IsApproved = true,
                             IsAvailable = true,
                             StockQuantity = 5
@@ -145,7 +145,7 @@ namespace ShoppingCart.Data
                         Price = 2m,
                         Category = fruits,
                         Image = "grapefruit.jpg",
-                        Vendor = vendor1,
+                        VendorId = vendor1.Id,
                         IsApproved = true,
                         IsAvailable = true,
                         StockQuantity = 7
@@ -158,7 +158,7 @@ namespace ShoppingCart.Data
                         Price = 5.99m,
                         Category = shirts,
                         Image = "white shirt.jpg",
-                        Vendor = vendor2,
+                        VendorId = vendor2.Id,
                         IsApproved = true,
                         IsAvailable = true,
                         StockQuantity = 20
@@ -171,7 +171,7 @@ namespace ShoppingCart.Data
                         Price = 7.99m,
                         Category = shirts,
                         Image = "black shirt.jpg",
-                        Vendor = vendor1,
+                        VendorId = vendor1.Id,
                         IsApproved = true,
                         IsAvailable = true,
                         StockQuantity = 30
@@ -184,7 +184,7 @@ namespace ShoppingCart.Data
                         Price = 5.99m,
                         Category = shirts,
                         Image = "yellow shirt.jpg",
-                        Vendor = vendor1,
+                        VendorId = vendor1.Id,
                         IsApproved = true,
                         IsAvailable = true,
                         StockQuantity = 20
