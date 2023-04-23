@@ -37,7 +37,12 @@ namespace ShoppingCart.Models
 
         // Vendor Id Added
 
-        public string  Vendor { get; set; }
+        // public string  Vendor { get; set; }
+
+        public string VendorId { get; set; }
+
+        [ForeignKey("VendorId")]
+        public AppUser Vendor { get; set; }
 
         public bool IsApproved { get; set; }
 

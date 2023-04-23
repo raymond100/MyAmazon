@@ -126,9 +126,11 @@ app.UseEndpoints(endpoints =>
 
 
 
-
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-SeedData.SeedDatabase(context);
+var userManager = app.Services.CreateScope().ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+var roleManager = app.Services.CreateScope().ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+SeedData.SeedDatabase(context, userManager, roleManager);
 
 app.Run();
 

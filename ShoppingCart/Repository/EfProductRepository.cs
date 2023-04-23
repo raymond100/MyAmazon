@@ -81,8 +81,9 @@ namespace ShoppingCart.Repository
         public async Task<List<Product>> GetProductsByCategoryIdAsync(long categoryId)
         {
             return await _dbContext.Products
-                .Where(p => p.CategoryId == categoryId)
+                .Where(p => (p.CategoryId == categoryId) && (p.IsApproved == true))
                 .ToListAsync();
+
         }
 
     }
