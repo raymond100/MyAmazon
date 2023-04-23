@@ -12,14 +12,17 @@ namespace ShoppingCart.Services
         {
             _userRepository = userRepository; 
         }
-        public List<AppUser> GetAllNonApprovedUsers()
+        public async Task<List<AppUser>> GetAllNonApprovedUsers()
         {
-            return _userRepository.GetAllNonApprovedUsers();
+            List<AppUser> users = await _userRepository.GetAllNonApprovedUsers();
+            return users;
         }
+
         public Status ApproveUser(string UserId) { 
         
          return _userRepository.ApproveUser(UserId);    
             
         }
+        
     }
 }

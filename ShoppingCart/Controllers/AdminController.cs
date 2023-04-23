@@ -20,8 +20,7 @@ namespace ShoppingCart.Controllers
         {
             var products = await _productService.GetAllProductsAsync();
 
-            var users =  _userService.GetAllNonApprovedUsers();
-           
+            var users =  await _userService.GetAllNonApprovedUsers();
             ViewBag.products = products;
             ViewBag.users = users;
 

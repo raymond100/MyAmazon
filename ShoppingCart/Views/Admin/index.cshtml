@@ -1,5 +1,11 @@
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore;
+@using System.Linq;
+
+
 @{
     ViewData["Title"] = "Admin";
+    
 }
 
 <main class="mt-5">
@@ -27,24 +33,37 @@
                         <th scope="col">Email</th>
                         <th scope="col">Phone number</th>
                         <th scope="col">Occupation</th>
+                        <th scope="col">Roles</th>
                         <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @for (int i = 0; i < ViewBag.users.Count; i++)
+                        @if (ViewBag.users != null)
                         {
-                            <tr>
-                                <td>@(i + 1)</td>
-                                <td>@ViewBag.users[i].UserName</td>
-                                <td>@ViewBag.users[i].Email</td>
-                                <td>@ViewBag.users[i].PhoneNumber</td>
-                                <td>@ViewBag.users[i].Occupation</td>
-                                <td>
-                                    <button>Approve</button>
-                                    <button>Reject</button>
-                                </td>
-                            </tr>
+                            @for (int i = 0; i < ViewBag.users.Count; i++)
+                            {
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@ViewBag.users[i].UserName</td>
+                                    <td>@ViewBag.users[i].Email</td>
+                                    <td>@ViewBag.users[i].PhoneNumber</td>
+                                    <td>@ViewBag.users[i].Occupation</td>
+                                    <td>
+                                    @foreach(var role in ViewBag.users[i].Roles){
+                                        @role.RoleId
+                                    }
+                                    </td>
+                                    <td>
+                                     @if (((List<IdentityUserRole<string>>)ViewBag.users[i].Roles).Any(r => r.RoleId == "Vendor"))
+                                        {
+                                            <button>Approve</button>
+                                            <button>Reject</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
+
                     </tbody>
                     </table>
             </div>
