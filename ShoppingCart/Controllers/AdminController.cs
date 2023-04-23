@@ -9,16 +9,21 @@ namespace ShoppingCart.Controllers
     {
 
         private readonly IProductService _productService;
+        private readonly IUserService _userService;
 
-        public AdminController(IProductService productService){
+        public AdminController(IProductService productService, IUserService userService){
             _productService = productService;
+            _userService = userService;
         }
 
         public async Task<IActionResult> Index()
         {
             var products = await _productService.GetAllProductsAsync();
+
+            var users =  _userService.GetAllNonApprovedUsers();
            
             ViewBag.products = products;
+            ViewBag.users = users;
 
             return View();
         }
