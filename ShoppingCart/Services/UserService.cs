@@ -23,6 +23,16 @@ namespace ShoppingCart.Services
          return _userRepository.ApproveUser(UserId);    
             
         }
-        
+
+
+        public Status SaveUserAccount(UserAccount Account)
+        {
+            return _userRepository.SaveUserAccount(Account);
+        }
+
+        public Task<Status> DeleteUser(string UserId)
+        {
+            return _userRepository.DeleteUser(UserId);
+        }
     }
 }

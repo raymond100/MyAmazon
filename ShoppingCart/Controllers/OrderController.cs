@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Text;
+using ShoppingCart.Repository;
+using ShoppingCart.Repository.BankSystem;
+using ShoppingCart.Repository.BankSystem.BankSystemModels;
 
 namespace ShoppingCart.Controllers
 {
@@ -20,16 +23,18 @@ namespace ShoppingCart.Controllers
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
+        private readonly IPaymentRepository paymentRepository;
         
 
-        public OrderController(DataContext context, UserManager<AppUser> userManager, IProductService productService
-        ,IOrderService orderService, IOrderItemService orderItemService)
+        public OrderController(DataContext context, UserManager<AppUser> userManager, IProductService productService, IPaymentRepository paymentRepository
+        , IOrderService orderService, IOrderItemService orderItemService)
         {
             _context = context;
             _userManager = userManager;
             _productService = productService;
             _orderService = orderService;
             _orderItemService = orderItemService;
+            paymentRepository = paymentRepository;
         }
 
          public async Task<IActionResult> Index()
@@ -83,7 +88,27 @@ namespace ShoppingCart.Controllers
             }
 
             Order data = new Order(userId,orderNumber.ToString(),currentDateTime,userCart.Total,orderItems);
-            
+
+
+            var user = new UserAccount
+            {
+               Id = 30,
+               UserId = "aaa",
+               NameOnCard = "aaa",
+               CardNumber = 000,
+               ExpirationDate = DateTime.Now,
+               CVV = 000,
+               PaymentType = PaymentType.VISA
+            };
+
+            OrderPaymentData orderPaymentData = new OrderPaymentData();
+            orderPaymentData.Order = data;
+          
+            Status status = paymentRepository.OrderPayment(orderPaymentData);
+            if(status.StatusCode != 1)
+            {
+                return RedirectToAction("Index");
+            }
             await _orderService.CreateOrderAsync(data);
             TempData["Success"] = "Your oder is sucessul";
             return RedirectToAction("Index");
