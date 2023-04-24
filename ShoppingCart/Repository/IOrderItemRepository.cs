@@ -7,5 +7,7 @@ namespace ShoppingCart.Repository
     public interface IOrderItemRepository
     {
         Task<OrderItem> AddOrderItemAsync(OrderItem orderItem);
+        Task<List<OrderItem>> GetOrderItemByVendorItAsync(string vendorId);
+        Task<List<IGrouping<Category, OrderItem>>> GetOrderItemByVendorItAsyncGrouByCategory(string vendorId);
     }
 }

@@ -90,6 +90,5 @@ namespace ShoppingCart.Repository
             var products = await _dbContext.Products.Include(p => p.Category).Where(p => p.VendorId == vendorId).ToListAsync();
             return products;
         }
-
     }
 }

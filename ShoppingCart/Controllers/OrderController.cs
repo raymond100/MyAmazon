@@ -81,6 +81,7 @@ namespace ShoppingCart.Controllers
                     ProductName = cartItem.ProductName,
                     Quantity = cartItem.Quantity,
                     Price = cartItem.Price,
+                    OrderDate = currentDateTime
                 };
                // await _orderItemService.CreateOrderItemAsync(orderItem);
                 orderItems.Add(orderItem);

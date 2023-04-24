@@ -83,6 +83,30 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
 
+// builder.Services.AddAuthentication("AuthScheme")
+//         .AddCookie("AuthScheme", options =>
+//         {
+//             options.LoginPath = "/Identity/Account/Login";
+//             options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+//         });
+
+builder.Services.AddAuthorization(options =>
+    {
+        
+        options.AddPolicy("AdminPolicy", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireRole("Admin");
+            // other requirements
+        });
+        options.AddPolicy("VendorPolicy", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireRole("Vendor");
+            // other requirements
+        });
+    });
+
 var app = builder.Build();
 
 app.UseSession();
@@ -108,22 +132,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-    endpoints.MapControllerRoute(
-        name: "add-to-cart",
-        pattern: "Cart/AddToCart/{id:int}",
-        defaults: new { controller = "Cart", action = "Add" });
-    endpoints.MapControllerRoute(
-        name: "decrease-from-cart",
-        pattern: "Cart/Decrease/{id:int}",
-        defaults: new { controller = "Cart", action = "Decrease" });
-    endpoints.MapControllerRoute(
-        name: "remove-from-cart",
-        pattern: "Cart/Remove/{id:int}",
-        defaults: new { controller = "Cart", action = "Remove" });
-    endpoints.MapControllerRoute(
-        name: "clear-cart",
-        pattern: "Cart/Clear",
-        defaults: new { controller = "Cart", action = "Clear" });
 });
 
 
