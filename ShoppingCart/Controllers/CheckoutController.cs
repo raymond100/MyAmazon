@@ -34,6 +34,7 @@ namespace ShoppingCart.Controllers
         {
             VendorPaymentData model = new VendorPaymentData();
             return View(model);
+
         }
 
         public async Task<IActionResult> VendorPayment(VendorPaymentData model)
@@ -61,6 +62,38 @@ namespace ShoppingCart.Controllers
             TempData["msg"] = resunt.Message;
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> OrderPayment(OrderPaymentData model)
+        {
+    
+            return RedirectToAction(nameof(Index));
+        }
+
+        //public async Task<IActionResult> VendorPayment(VendorPaymentData model)
+        //{
+        //  var resunt =  paymentRepository.VendorPayment(model);
+        //    if(resunt.StatusCode == 1)
+        //    {
+        //        AppUser user = await userManager.GetUserAsync(User);
+        //        var role = await roleManager.FindByNameAsync("Vendor");
+        //        if (role == null)
+        //        {
+        //            // Create the "Customer" role if it doesn't exist
+        //            await roleManager.CreateAsync(new IdentityRole("Vendor"));
+
+        //            role = await roleManager.FindByNameAsync("Vendor");
+        //        }
+
+        //        await userManager.AddToRoleAsync(user, role.Name);
+        //        UserAccount account = model.VendorAccount;
+        //        account.UserId=user.Id;
+        //        userRepository.SaveUserAccount(account);
+        //    }
+        
+
+        //    TempData["msg"] = resunt.Message;
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         
     }
