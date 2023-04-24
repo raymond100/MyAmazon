@@ -21,7 +21,7 @@ namespace ShoppingCart.Repository
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await _dbContext.Products.Include(p => p.Category).ToListAsync();
+            return await _dbContext.Products.Include(p => p.Category).Where(p=> p.IsApproved == false).ToListAsync();
         }
         public Status ApproveProduct(long productId)
         {

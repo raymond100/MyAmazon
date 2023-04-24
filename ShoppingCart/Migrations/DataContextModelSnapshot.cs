@@ -312,7 +312,6 @@ namespace ShoppingCart.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CustomerName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsShipped")
@@ -328,8 +327,9 @@ namespace ShoppingCart.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -348,10 +348,7 @@ namespace ShoppingCart.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long>("ProductId1")
+                    b.Property<long>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProductName")
@@ -365,7 +362,7 @@ namespace ShoppingCart.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -600,7 +597,7 @@ namespace ShoppingCart.Migrations
 
                     b.HasOne("ShoppingCart.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId1")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
