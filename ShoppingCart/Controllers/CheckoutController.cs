@@ -62,12 +62,6 @@ namespace ShoppingCart.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> OrderPayment(OrderPaymentData model)
-        {
-    
-
-
-            return RedirectToAction(nameof(Index));
-        }
+        
     }
 }

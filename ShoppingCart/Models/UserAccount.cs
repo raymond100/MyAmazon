@@ -14,5 +14,7 @@ namespace ShoppingCart.Models
         public DateTime ExpirationDate { get; set; }
         public int CVV { get; set; }
         public PaymentType PaymentType { get; set; }
+        
+    
     }
 }
