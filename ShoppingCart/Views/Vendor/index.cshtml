@@ -150,8 +150,11 @@
 <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-<!-- Chart code -->
+
+
+
 <script>
+<!--Chart code-- >
 am5.ready(function() {
 
 // Create root element
@@ -198,7 +201,7 @@ xRenderer.grid.template.setAll({
 
 var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
   maxDeviation: 0.3,
-  categoryField: "Category",
+  categoryField: "country",
   renderer: xRenderer,
   tooltip: am5.Tooltip.new(root, {})
 }));
@@ -214,12 +217,12 @@ var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
 // Create series
 // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
 var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-  name: "Sale basing on categories ",
+  name: "Series 1",
   xAxis: xAxis,
   yAxis: yAxis,
   valueYField: "value",
   sequencedInterpolation: true,
-  categoryXField: "Categories",
+  categoryXField: "country",
   tooltip: am5.Tooltip.new(root, {
     labelText: "{valueY}"
   })
@@ -234,12 +237,42 @@ series.columns.template.adapters.add("stroke", function(stroke, target) {
   return chart.get("colors").getIndex(series.columns.indexOf(target));
 });
 
-@{
-    var data = ViewBag.OderItemGroupByCategory;
-    var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-}
+
 // Set data
-var data = @Html.Raw(json);
+var data = [{
+  country: "Clothing",
+  value: 2025
+}, {
+  country: "Shoes",
+  value: 1882
+}, {
+  country: "Computers",
+  value: 1809
+}, {
+  country: "Electronics",
+  value: 1322
+}, {
+  country: "Garden",
+  value: 1122
+}, {
+  country: "Books",
+  value: 1114
+}, {
+  country: "Baby",
+  value: 984
+}, {
+  country: "Kitchen",
+  value: 711
+}, {
+  country: "Home",
+  value: 665
+}, {
+  country: "Grocery",
+  value: 443
+}, {
+  country: "Gifs",
+  value: 441
+}];
 
 xAxis.data.setAll(data);
 series.data.setAll(data);
@@ -252,3 +285,4 @@ chart.appear(1000, 100);
 
 }); // end am5.ready()
 </script>
+

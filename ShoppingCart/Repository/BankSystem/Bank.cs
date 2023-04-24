@@ -38,7 +38,7 @@ namespace ShoppingCart.Repository.BankSystem
             if (account == null)
             {
                 status.StatusCode = 0;
-                status.Message = "Account Not Found";
+                status.Message = "Your payment is processing! Apporval in 2-3 business days.";
                 return status;
             }
 

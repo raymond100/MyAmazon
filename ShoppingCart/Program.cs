@@ -83,12 +83,12 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddAuthentication("AuthScheme")
-        .AddCookie("AuthScheme", options =>
-        {
-            options.LoginPath = "/Identity/Account/Login";
-            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-        });
+// builder.Services.AddAuthentication("AuthScheme")
+//         .AddCookie("AuthScheme", options =>
+//         {
+//             options.LoginPath = "/Identity/Account/Login";
+//             options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+//         });
 
 builder.Services.AddAuthorization(options =>
     {

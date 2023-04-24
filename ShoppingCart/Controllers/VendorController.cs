@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingCart.Controllers
 {
-    [Authorize(AuthenticationSchemes = "AuthScheme", Policy = "VendorPolicy")]
+    // [Authorize(AuthenticationSchemes = "AuthScheme", Policy = "VendorPolicy")]
     public class VendorController : Controller
     {
         private readonly IProductService _productService;

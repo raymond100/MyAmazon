@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingCart.Controllers
 {
-    [Authorize(AuthenticationSchemes = "AuthScheme", Policy = "AdminPolicy")]
+    // [Authorize(AuthenticationSchemes = "AuthScheme", Policy = "AdminPolicy")]
     public class AdminController : Controller
     {
 
