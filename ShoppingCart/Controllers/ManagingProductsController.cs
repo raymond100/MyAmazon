@@ -7,6 +7,7 @@ using ShoppingCart.Data;
 using ShoppingCart.Infrastructure;
 using ShoppingCart.Models;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShoppingCart.Controllers
 {
@@ -15,11 +16,13 @@ namespace ShoppingCart.Controllers
     public class ManagingProductsController : Controller
     {
         private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public ManagingProductsController(DataContext context, IWebHostEnvironment webHostEnvironment)
+        public ManagingProductsController(DataContext context, IWebHostEnvironment webHostEnvironment,UserManager<AppUser> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index(int p = 1)
         {
@@ -45,41 +48,25 @@ namespace ShoppingCart.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
-
-            ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-
-
-            if (ModelState.IsValid)
+            product.VendorId = _userManager.GetUserId(User);
+            if (product.ImageUpload != null)
             {
-                product.Slug = product.Name.ToLower().Replace(" ", "-");
-                var slug = await _context.Products.FirstOrDefaultAsync(p => p.Slug == product.Slug);
-                if (slug != null)
-                {
-                    ModelState.AddModelError("", "The product already exists");
-                    return View(product);
-                }
+                string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+                string imageName = Guid.NewGuid().ToString() + "_" + product.ImageUpload.FileName;
 
-                if (product.ImageUpload != null)
-                {
-                    string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
-                    string imageName = Guid.NewGuid().ToString() + "_" + product.ImageUpload.FileName;
+                string filePath = Path.Combine(uploadsDir, imageName);
 
-                    string filePath = Path.Combine(uploadsDir, imageName);
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                await product.ImageUpload.CopyToAsync(fs);
+                fs.Close();
 
-                    FileStream fs = new FileStream(filePath, FileMode.Create);
-                    await product.ImageUpload.CopyToAsync(fs);
-                    fs.Close();
+                product.Image = imageName;
 
-                    product.Image = imageName;
-
-                }
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "The Product has been created!";
-                return RedirectToAction("Index");
             }
-            return View(product);
-
+            _context.Add(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "The Product has been created!";
+            return RedirectToAction("index", "vendor");
         }
 
         public  IActionResult Edit(long id)
@@ -94,39 +81,25 @@ namespace ShoppingCart.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, Product product)
         {
-            ViewBag.Categories = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-
-            if (ModelState.IsValid)
+             product.VendorId = _userManager.GetUserId(User);
+            if (product.ImageUpload != null)
             {
-                product.Slug = product.Name.ToLower().Replace(" ", "-");
-                var slug = await _context.Products.FirstOrDefaultAsync(p => p.Slug == product.Slug);
-                if (slug != null)
-                {
-                    ModelState.AddModelError("", "The product already exists");
-                    return View(product);
-                }
+                string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+                string imageName = Guid.NewGuid().ToString() + "_" + product.ImageUpload.FileName;
 
-                if (product.ImageUpload != null)
-                {
-                    string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
-                    string imageName = Guid.NewGuid().ToString() + "_" + product.ImageUpload.FileName;
+                string filePath = Path.Combine(uploadsDir, imageName);
 
-                    string filePath = Path.Combine(uploadsDir, imageName);
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                await product.ImageUpload.CopyToAsync(fs);
+                fs.Close();
 
-                    FileStream fs = new FileStream(filePath, FileMode.Create);
-                    await product.ImageUpload.CopyToAsync(fs);
-                    fs.Close();
-
-                    product.Image = imageName;
-
-                }
-                _context.Update(product);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "The Product has been edited!";
+                product.Image = imageName;
 
             }
-            return View(product);
-
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "The Product has been edited!";
+            return RedirectToAction("index", "vendor");
         }
 
         public async Task<IActionResult> Delete(long id)
@@ -144,7 +117,7 @@ namespace ShoppingCart.Controllers
             _context.Remove(product);
             await _context.SaveChangesAsync();
             TempData["Success"] = "Product has been deleted successfuly";
-            return RedirectToAction("Index");
+            return RedirectToAction("index", "vendor");
         }
     }
 }

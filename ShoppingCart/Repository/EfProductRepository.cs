@@ -21,7 +21,7 @@ namespace ShoppingCart.Repository
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await _dbContext.Products.Include(p => p.Category).ToListAsync();
+            return await _dbContext.Products.Include(p => p.Category).Where(p=> p.IsApproved == false).ToListAsync();
         }
         public Status ApproveProduct(long productId)
         {
@@ -81,8 +81,14 @@ namespace ShoppingCart.Repository
         public async Task<List<Product>> GetProductsByCategoryIdAsync(long categoryId)
         {
             return await _dbContext.Products
-                .Where(p => p.CategoryId == categoryId)
+                .Where(p => (p.CategoryId == categoryId) && (p.IsApproved == true))
                 .ToListAsync();
+        }
+
+        public async Task<List<Product>> GetAllProductsAsyncByVendorId(string vendorId)
+        {
+            var products = await _dbContext.Products.Include(p => p.Category).Where(p => p.VendorId == vendorId).ToListAsync();
+            return products;
         }
 
     }

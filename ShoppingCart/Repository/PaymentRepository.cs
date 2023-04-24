@@ -39,7 +39,7 @@ namespace ShoppingCart.Repository
 
             foreach (var item in orderPaymentData.Order.OrderItems)
             {
-                string VendorId = item.Product.Vendor;
+                string VendorId = item.Product.VendorId;
 
                 if (Vendors.ContainsKey(VendorId))
                 {

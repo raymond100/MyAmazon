@@ -59,8 +59,8 @@
                                     <td>
                                      @if (((List<IdentityUserRole<string>>)ViewBag.users[i].Roles).Any(r => r.RoleId == "Vendor"))
                                         {
-                                            <button>Approve</button>
-                                            <button>Reject</button>
+                                                <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="Approve" asp-route-UserId="@ViewBag.users[i].Id">Approve</a>
+                                                <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="Reject" asp-route-UserId="@ViewBag.users[i].Id">Reject</a>
                                         }
                                     </td>
                                 </tr>
@@ -136,21 +136,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var product in ViewBag.products)
-                        { 
-                            <tr>
-                                <th scope="row">@product.Id</th>
-                                <td><img src="/media/products/@product.Image" width="60"> </td>
-                                <td>@product?.Name</td>
-                                <td>@product?.Price</td>
-                                <td>@product?.Category?.Name</td>
-                                <td>@product?.Vendor</td>
-                                <td>
-                                    <button>Approve</button>
-                                    <button>Reject</button>
-                                  
-                                </td>
-                            </tr>
+                        @for (int i = 0; i < ViewBag.products.Count; i++)
+                        {
+
+                              <tr>
+                                  <th scope="row">@(i + 1)</th>
+                                  <td><img src="/media/products/@ViewBag.products[i].Image" width="60"> </td>
+                                  <td>@ViewBag.products[i]?.Name</td>
+                                  <td>@ViewBag.products[i]?.Price</td>
+                                  <td>@ViewBag.products[i]?.Category?.Name</td>
+                                  <td>
+                                    <a class="btn btn-success" asp-controller="Admin" asp-action="Approve" asp-route-id="@ViewBag.products[i].Id"><i class="bi bi-pencil-square"></i></a>
+                                    <a class="btn btn-danger" asp-controller="Admin" asp-action="Reject" asp-route-id="@ViewBag.products[i].Id"><i class="bi bi-trash"></i></a>
+                                  </td>
+                              </tr>
                         }
                     </tbody>
                     </table>

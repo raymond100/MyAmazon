@@ -21,7 +21,7 @@ namespace ShoppingCart.Controllers
         {
             //  var products = await _productService.GetAllProductsAsync();  changed
 
-            var products = await _productService.GetAllNonApprovedProductsAsync();
+            var products = await _productService.GetAllApprovedProductsAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {
