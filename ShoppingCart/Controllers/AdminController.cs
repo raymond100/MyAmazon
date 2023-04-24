@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingCart.Controllers
 {
+    [Authorize(AuthenticationSchemes = "AuthScheme", Policy = "AdminPolicy")]
     public class AdminController : Controller
     {
 

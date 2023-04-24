@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using ShoppingCart.Models;
 using System.Security.Claims;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShoppingCart.Controllers
 {
+    [Authorize(AuthenticationSchemes = "AuthScheme", Policy = "VendorPolicy")]
     public class VendorController : Controller
     {
         private readonly IProductService _productService;
