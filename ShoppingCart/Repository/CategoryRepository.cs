@@ -20,7 +20,8 @@ namespace ShoppingCart.Repository
 
         public async Task<Category> GetByIdAsync(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            //return await _context.Categories.FindAsync(id);
+            return await _context.Categories.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Category> GetBySlugAsync(string slug)

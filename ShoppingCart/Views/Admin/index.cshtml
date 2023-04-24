@@ -15,6 +15,9 @@
             <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="home" aria-selected="true">Users</button>
         </li>
         <li class="nav-item" role="presentation">
+            <button class="nav-link" id="category-tab" data-bs-toggle="tab" data-bs-target="#category" type="button" role="tab" aria-controls="profile" aria-selected="false">Category</button>
+        </li>
+        <li class="nav-item" role="presentation">
             <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="profile" aria-selected="false">Products</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -69,6 +72,54 @@
             </div>
         </div>
     </div>
+
+        <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="container p-4">
+                        <div class="row p-3">
+                            <div class="col-6">
+                                <h2 class="text-primary">List of Categories</h2>
+                            </div>
+                            <div class="col-6 text-end">
+                                <a class="btn btn-primary" asp-action="CreateUpdate" asp-controller="Category">
+                                    <i class="bi bi-plus-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Category Name
+                                </th>
+                                <th>
+                                    Slug
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.category)
+                            {
+                                <tr>
+                                    <td> @item.Name</td>
+                                    <td> @item.Slug</td>
+                                    <td role="group">
+                                        <a asp-action="CreateUpdate" asp-controller="Category" asp-route-Id="@item.Id">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-controller="Category" asp-route-Id="@item.Id">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>            
     <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
         <div class="container">
             <div class="row">
@@ -162,8 +213,9 @@
 <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-<!-- Chart code -->
+
 <script>
+<!--Chart code-- >
 am5.ready(function() {
 
 // Create root element

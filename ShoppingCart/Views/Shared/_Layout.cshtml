@@ -91,7 +91,7 @@
                                 }
                                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">Sign out</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="OnPost">Sign out</a></li>
                             </ul>
                         </div>
                     }
