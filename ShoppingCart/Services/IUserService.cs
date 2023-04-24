@@ -11,5 +11,7 @@ namespace ShoppingCart.Services
         public Status SaveUserAccount(UserAccount Account);
 
         Task<List<AppUser>> GetAllNonApprovedUsers();
+
+        public Task<Status> DeleteUser(string UserId);
     }
 }

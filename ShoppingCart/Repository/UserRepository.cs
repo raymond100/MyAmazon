@@ -57,5 +57,14 @@ namespace ShoppingCart.Repository
             status.StatusCode=1;
             return status;
         }
+        public async Task<Status> DeleteUser(string UserId)
+        {
+            Status status = new Status();
+            AppUser user = _context.Users.Single(u => u.Id.Equals(UserId));
+            var result = await _userManager.DeleteAsync(user);
+            status.Message = "User Deleted";
+            status.StatusCode = 1;
+            return status;
+        }
     }
 }

@@ -29,5 +29,10 @@ namespace ShoppingCart.Services
         {
             return _userRepository.SaveUserAccount(Account);
         }
+
+        public Task<Status> DeleteUser(string UserId)
+        {
+            return _userRepository.DeleteUser(UserId);
+        }
     }
 }

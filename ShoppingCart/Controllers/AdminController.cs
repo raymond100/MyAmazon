@@ -26,5 +26,19 @@ namespace ShoppingCart.Controllers
 
             return View();
         }
+
+        public async Task<IActionResult> Approve(string UserId)
+        {
+           _userService.ApproveUser(UserId);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Reject(string UserId)
+        {
+            _userService.DeleteUser(UserId);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

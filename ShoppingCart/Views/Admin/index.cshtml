@@ -56,8 +56,8 @@
                                     <td>
                                      @if (((List<IdentityUserRole<string>>)ViewBag.users[i].Roles).Any(r => r.RoleId == "Vendor"))
                                         {
-                                            <button>Approve</button>
-                                            <button>Reject</button>
+                                                <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="Approve" asp-route-UserId="@ViewBag.users[i].Id">Approve</a>
+                                                <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="Reject" asp-route-UserId="@ViewBag.users[i].Id">Reject</a>
                                         }
                                     </td>
                                 </tr>
