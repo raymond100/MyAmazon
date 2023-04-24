@@ -4,7 +4,7 @@ using ShoppingCart.Services;
 using Microsoft.AspNetCore.Identity;
 using ShoppingCart.Models;
 using System.Security.Claims;
-
+using System.Linq;
 
 namespace ShoppingCart.Controllers
 {
@@ -38,6 +38,25 @@ namespace ShoppingCart.Controllers
                         ViewBag.products = products;
                     }
                     ViewBag.OrderItems= await _orderItemService.GetOrderItemByVendorItAsync(vendorId);
+                    var total = (decimal)0;
+                    foreach( var data in ViewBag.OrderItems) {
+                        total = total + data.Total;
+                    }
+                    var oderItemGroupByCategory = await _orderItemService.GetOrderItemByVendorItAsyncGrouByCategory(vendorId);
+                    Dictionary<string, decimal> map = new Dictionary<string, decimal>();
+                    foreach(var data in oderItemGroupByCategory){
+                        var totalByCategory = (decimal)0;
+                        foreach(var row in data){
+                            totalByCategory = totalByCategory + row.Total;
+                        }
+                        map.Add(data.Key.Name, totalByCategory);
+                    }
+                    var dataOfCategory = map.Select(x => new {
+                        Category = x.Key,
+                        value = x.Value
+                    }).ToList();
+                    ViewBag.OderItemGroupByCategory = dataOfCategory;
+                    ViewBag.TotalSales = total;
                 }
             }
             return View();

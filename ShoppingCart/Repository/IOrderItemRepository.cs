@@ -8,5 +8,6 @@ namespace ShoppingCart.Repository
     {
         Task<OrderItem> AddOrderItemAsync(OrderItem orderItem);
         Task<List<OrderItem>> GetOrderItemByVendorItAsync(string vendorId);
+        Task<List<IGrouping<Category, OrderItem>>> GetOrderItemByVendorItAsyncGrouByCategory(string vendorId);
     }
 }
