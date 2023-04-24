@@ -16,12 +16,15 @@ namespace ShoppingCart.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IProductService _productService;
         private readonly IUserService _userService;
+        private readonly ICategoryService _categoryService;
 
-        public AdminController(UserManager<AppUser> userManager,DataContext context,IProductService productService, IUserService userService){
+        public AdminController(UserManager<AppUser> userManager,DataContext context,IProductService productService, IUserService userService,ICategoryService categoryService)
+        {
             _context = context;
             _productService = productService;
             _userService = userService;
             _userManager = userManager;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> Index()
@@ -29,8 +32,12 @@ namespace ShoppingCart.Controllers
             var products = await _productService.GetAllProductsAsync();
 
             var users =  await _userService.GetAllNonApprovedUsers();
+
+            var category = await _categoryService.GetAllAsync();
+
             ViewBag.products = products;
             ViewBag.users = users;
+            ViewBag.category = category;
 
             return View();
         }
