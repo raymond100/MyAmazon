@@ -40,12 +40,13 @@
                                 <label for="nameOnCard" class="form-label">Name on card</label>
                                 <input asp-for="VendorAccount.NameOnCard" type="text" class="form-control" id="nameOnCard" >
                             </div>
-                            <button type="submit" class="btn btn-primary">Subscribe</button>
+                                <button type="submit" class="btn btn-primary">Subscribe</button>  <a class="btn btn-primary px-4" href="/Home/index"> Home</a>
                                 @if(TempData["msg"] != null)
                                 {
                                     <p>@TempData["msg"]</p>
                                 }
                             </form>
+                           
                         </div>
                         <div class="col-md-2"></div>
                     </div>

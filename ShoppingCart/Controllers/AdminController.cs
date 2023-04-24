@@ -1,19 +1,27 @@
 
+using ShoppingCart.Data;
+using ShoppingCart.Infrastructure;
+using ShoppingCart.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShoppingCart.Controllers
 {
     public class AdminController : Controller
     {
 
+        private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IProductService _productService;
         private readonly IUserService _userService;
 
-        public AdminController(IProductService productService, IUserService userService){
+        public AdminController(UserManager<AppUser> userManager,DataContext context,IProductService productService, IUserService userService){
+            _context = context;
             _productService = productService;
             _userService = userService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -25,6 +33,25 @@ namespace ShoppingCart.Controllers
             ViewBag.users = users;
 
             return View();
+        }
+
+        public async Task<IActionResult> RejectProduct(long id)
+        {
+            Product product = await _context.Products.FindAsync(id);
+            _context.Remove(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Product has been rejected successfuly";
+            return RedirectToAction("index");
+        }
+        public async Task<IActionResult> ApproveProduct(long id)
+        {
+            Product product = _context.Products.Find(id);
+           // product.VendorId = _userManager.GetUserId(User);
+            product.IsApproved = true;
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Product has been approved successfuly";
+            return RedirectToAction("index");
         }
 
         public async Task<IActionResult> Approve(string UserId)

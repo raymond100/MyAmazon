@@ -95,8 +95,8 @@
                                   <td>@ViewBag.products[i]?.Price</td>
                                   <td>@ViewBag.products[i]?.Category?.Name</td>
                                   <td>
-                                    <button>Approve</button>
-                                    <button>Reject</button>
+                                    <a class="btn btn-success" asp-controller="Admin" asp-action="ApproveProduct" asp-route-id="@ViewBag.products[i].Id"><i class="bi bi-pencil-square"></i></a>
+                                    <a class="btn btn-danger" asp-controller="Admin" asp-action="RejectProduct" asp-route-id="@ViewBag.products[i].Id"><i class="bi bi-trash"></i></a>
                                   </td>
                               </tr>
                         }

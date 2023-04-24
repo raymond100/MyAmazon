@@ -56,24 +56,30 @@ namespace ShoppingCart.Repository
             foreach(var entry in Vendors)
             {
                 UserAccount VendorAccount = _context.UsersAccounts.Where(a=>a.UserId.Equals(entry.Key)).FirstOrDefault();
-
+                
                 PaymentData VendorPaymentData = new PaymentData();
-                data.userAccount = VendorAccount;
-                data.Amount = entry.Value * VendorPercentage;
+                VendorPaymentData.userAccount = VendorAccount;
+
+
+                VendorPaymentData.Amount = entry.Value * VendorPercentage;
                 _bank.ProceedPayment(VendorPaymentData);
             
             }
            
+
             // 20% payment to the system
+
             PaymentData SystemPaymentData = new PaymentData();
-           //get shoppingCart Account data.userAccount = VendorAccount;
-            data.Amount = orderPaymentData.Order.TotalAmount * SystemPercentage;
+            UserAccount SystemAccount = _context.UsersAccounts.Where(a => a.UserId.Equals("ShoppingCart")).FirstOrDefault();
+            SystemPaymentData.Amount = orderPaymentData.Order.TotalAmount * SystemPercentage;
+            SystemPaymentData.userAccount = SystemAccount;
             result =  _bank.ProceedPayment(SystemPaymentData);
             return result.Result;
         }
 
 
         //Vendor payment
+
             public Status VendorPayment(VendorPaymentData paymentData)
              {
             PaymentData data = new PaymentData();

@@ -21,6 +21,9 @@ namespace ShoppingCart.Repository.BankSystem
             transaction.TransactionDate = DateTime.Now;
             transaction.TransactionStatus = "TS";
             transaction.CardNumber = paymentData.userAccount.CardNumber;
+            Random rnd = new Random();
+            int num = rnd.Next();
+            transaction.TransactionNumber = num;
             _context.Transactions.Add(transaction);
             _context.SaveChanges();
             status.StatusCode = 1;
@@ -42,24 +45,27 @@ namespace ShoppingCart.Repository.BankSystem
                 return status;
             }
 
-           //if ((account.NameOnCard != paymentData.userAccount.NameOnCard) ||
-           //     (account.CVV != paymentData.userAccount.CVV) ||
-           //     (account.ExpirationDate != paymentData.userAccount.ExpirationDate) ||
-           //     (account.PaymentType != paymentData.userAccount.PaymentType )
-           //     ) 
-           // {
-           //     status.StatusCode = 0;
-           //     status.Message = "Invalid Account";
-           //     return status;
-           // }
+            //if ((account.NameOnCard != paymentData.userAccount.NameOnCard) ||
+            //     (account.CVV != paymentData.userAccount.CVV) ||
 
-           if(paymentData.Amount>account.CurrentAmount)
+            //     (account.PaymentType != paymentData.userAccount.PaymentType)
+            //     )
+            //{
+            //    status.StatusCode = 0;
+            //    status.Message = "Invalid Account";
+            //    return status;
+            //}
+
+            if (paymentData.Amount>account.CurrentAmount)
             {
                 Transaction transaction = new Transaction();
                 transaction.TransactionValue = paymentData.Amount;
                 transaction.TransactionDate = DateTime.Now;
                 transaction.TransactionStatus = "TF";
                 transaction.CardNumber = paymentData.userAccount.CardNumber;
+                Random rnd = new Random();
+                int num = rnd.Next();
+                transaction.TransactionNumber = num;
                 _context.Transactions.Add(transaction);
                 _context.SaveChanges();
 

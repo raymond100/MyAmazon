@@ -23,16 +23,18 @@ namespace ShoppingCart.Controllers
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
+        private readonly IPaymentRepository _paymentRepository;
 
 
         public OrderController(DataContext context, UserManager<AppUser> userManager, IProductService productService
-        ,IOrderService orderService, IOrderItemService orderItemService)
+        ,IOrderService orderService, IOrderItemService orderItemService, IPaymentRepository paymentRepository)
         {
             _context = context;
             _userManager = userManager;
             _productService = productService;
             _orderService = orderService;
             _orderItemService = orderItemService;
+            _paymentRepository = paymentRepository;
         }
 
          public async Task<IActionResult> Index()
@@ -67,8 +69,7 @@ namespace ShoppingCart.Controllers
             Guid orderNumber = Guid.NewGuid();
 
             DateTime currentDateTime = DateTime.Now;
-            Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
-                                        .FirstOrDefaultAsync(c => c.UserId == userId);
+            Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product).FirstOrDefaultAsync(c => c.UserId == userId);
 
             var orderItems = new List<OrderItem>();
             
@@ -88,12 +89,12 @@ namespace ShoppingCart.Controllers
             Order data = new Order(userId,orderNumber.ToString(),currentDateTime,userCart.Total,orderItems);
 
 
-            var user = new UserAccount
+            var userAccount = new UserAccount
             {
                Id = 30,
                UserId = "aaa",
                NameOnCard = "aaa",
-               CardNumber = 000,
+               CardNumber = 0000000000000000,
                ExpirationDate = DateTime.Now,
                CVV = 000,
                PaymentType = PaymentType.VISA
@@ -101,15 +102,16 @@ namespace ShoppingCart.Controllers
 
             OrderPaymentData orderPaymentData = new OrderPaymentData();
             orderPaymentData.Order = data;
+            orderPaymentData.Account = userAccount;
+            Status status = _paymentRepository.OrderPayment(orderPaymentData);
+            if(status.StatusCode != 1)
+            {
+                TempData["msg"] = "order failed";
+                return RedirectToAction("Index");
+            }
           
-            //Status status = paymentRepository.OrderPayment(orderPaymentData);
-            //if(status.StatusCode != 1)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-
             await _orderService.CreateOrderAsync(data);
-            TempData["Success"] = "Your oder is sucessul";
+            TempData["msg"] = "order Success";
             return RedirectToAction("Index");
         }
     }

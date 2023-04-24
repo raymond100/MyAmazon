@@ -9,12 +9,14 @@ namespace ShoppingCart.Models.ViewModels
     {
         public Cart Cart { get; set; }
 
+
         public CartViewModel(Cart cart)
         {
             Cart = cart;
 
         }
-    }
 
+
+    }
 
 }
