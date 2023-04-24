@@ -82,6 +82,7 @@ namespace ShoppingCart.Controllers
                     ProductName = cartItem.ProductName,
                     Quantity = cartItem.Quantity,
                     Price = cartItem.Price,
+                    OrderDate = currentDateTime
                 };
                // await _orderItemService.CreateOrderItemAsync(orderItem);
                 orderItems.Add(orderItem);
@@ -104,11 +105,11 @@ namespace ShoppingCart.Controllers
             OrderPaymentData orderPaymentData = new OrderPaymentData();
             orderPaymentData.Order = data;
           
-            Status status = paymentRepository.OrderPayment(orderPaymentData);
-            if(status.StatusCode != 1)
-            {
-                return RedirectToAction("Index");
-            }
+            // Status status = paymentRepository.OrderPayment(orderPaymentData);
+            // if(status.StatusCode != 1)
+            // {
+            //     return RedirectToAction("Index");
+            // }
             await _orderService.CreateOrderAsync(data);
             TempData["Success"] = "Your oder is sucessul";
             return RedirectToAction("Index");

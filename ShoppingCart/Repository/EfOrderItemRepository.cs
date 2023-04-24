@@ -30,5 +30,12 @@ namespace ShoppingCart.Repository
             }
             
         }
+
+         public async Task<List<OrderItem>> GetOrderItemByVendorItAsync(string vendorId)
+        {
+            return await _context.OrderItems
+                 .Where(o => o.Product.VendorId == vendorId)
+                .ToListAsync();
+        }
     }
 }

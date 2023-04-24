@@ -35,24 +35,24 @@ namespace ShoppingCart.Controllers
             return View();
         }
 
-        // public async Task<IActionResult> Reject(long id)
-        // {
-        //     Product product = await _context.Products.FindAsync(id);
-        //     _context.Remove(product);
-        //     await _context.SaveChangesAsync();
-        //     TempData["Success"] = "Product has been rejected successfuly";
-        //     return RedirectToAction("index");
-        // }
-        // public async Task<IActionResult> Approve(long id)
-        // {
-        //     Product product =  _context.Products.Find(id);
-        //     product.VendorId = _userManager.GetUserId(User);
-        //     product.IsApproved = true;
-        //     _context.Update(product);
-        //     await _context.SaveChangesAsync();
-        //     TempData["Success"] = "Product has been approved successfuly";
-        //     return RedirectToAction("index");
-        // }
+        public async Task<IActionResult> RejectProduct(long id)
+        {
+            Product product = await _context.Products.FindAsync(id);
+            _context.Remove(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Product has been rejected successfuly";
+            return RedirectToAction("index");
+        }
+        public async Task<IActionResult> ApproveProduct(long id)
+        {
+            Product product =  _context.Products.Find(id);
+            product.VendorId = _userManager.GetUserId(User);
+            product.IsApproved = true;
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Product has been approved successfuly";
+            return RedirectToAction("index");
+        }
 
         public async Task<IActionResult> Approve(string UserId)
         {

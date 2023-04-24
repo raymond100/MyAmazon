@@ -18,5 +18,9 @@ namespace  ShoppingCart.Services
             await _orderItemRepository.AddOrderItemAsync(orderItem);
             return orderItem;
         }
+        
+        public async Task<List<OrderItem>> GetOrderItemByVendorItAsync(string vendorId){
+            return await _orderItemRepository.GetOrderItemByVendorItAsync(vendorId);
+        }
     }
 }

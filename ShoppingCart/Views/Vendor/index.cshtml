@@ -21,25 +21,40 @@
             <button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button" role="tab" aria-controls="contact" aria-selected="false" aria-disabled="true">Report</button>
         </li>
     </ul>
-
-
-
-
     <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="orders" role="tabpanel" aria-labelledby="orders-tab">
              <div class="container">
             <div class="row">
                 <table class="table">
-         
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Order Date</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        @if(ViewBag.OrderItems != null){
+                            @for (int i = 0; i < ViewBag.OrderItems.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td>@ViewBag.OrderItems[i]?.ProductName</td>
+                                    <td>@ViewBag.OrderItems[i]?.Quantity</td>
+                                    <td>@ViewBag.OrderItems[i]?.Price</td>
+                                    <td>@ViewBag.OrderItems[i]?.Total</td>
+                                    <td>@ViewBag.OrderItems[i]?.OrderDate</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-
-
-
-
     <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
         <div class="container">
             <div class="row">
@@ -77,10 +92,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
         <div class="container my-3">
             <h4>Report</h4>
