@@ -48,8 +48,23 @@ namespace ShoppingCart.Repository
 
             return users;
         }
-
-
-
+        public Status SaveUserAccount(UserAccount account)
+        {
+            Status status = new Status();
+            _context.UsersAccounts.Add(account);
+            _context.SaveChanges();
+            status.Message = "Account Saved";
+            status.StatusCode=1;
+            return status;
+        }
+        public async Task<Status> DeleteUser(string UserId)
+        {
+            Status status = new Status();
+            AppUser user = _context.Users.Single(u => u.Id.Equals(UserId));
+            var result = await _userManager.DeleteAsync(user);
+            status.Message = "User Deleted";
+            status.StatusCode = 1;
+            return status;
+        }
     }
 }

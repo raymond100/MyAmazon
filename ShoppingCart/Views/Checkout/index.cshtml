@@ -1,3 +1,6 @@
+@using ShoppingCart.Repository.BankSystem.BankSystemModels;
+@model ShoppingCart.Repository.BankSystem.VendorPaymentData
+
 @{
     ViewData["Title"] = "Checkout";
     Layout = null;
@@ -22,25 +25,26 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-8">
                             <h5 class="mb-3">Pay with card</h5>
-                            <form>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                            </div>
+                            <form asp-action="VendorPayment" method="post">
                             <div class="mb-3">
                                 <label for="cardInfo" class="form-label">Card information</label>
-                                <input type="text" class="form-control" id="cardInfo">
+                                <input asp-for="VendorAccount.CardNumber" type="number" class="form-control" id="cardInfo">
                                  <div class="d-flex">
-                                    <input type="text" class="form-control" id="month" name="month" placeholder="MM/YY">
-                                    <input type="text" class="form-control" id="cvc" name="cvc" placeholder="CVC">
+                                    <input   asp-for="VendorAccount.ExpirationDate" type="date" class="form-control" id="month" name="month" placeholder="MM/YY">
+                                    <input asp-for="VendorAccount.CVV" type="number" class="form-control" id="cvc" name="cvc" placeholder="CVC">
                                  </div>
                             </div>
+                                <label asp-for="VendorAccount.PaymentType"></label>
+                                <select asp-for="VendorAccount.PaymentType" asp-items="Html.GetEnumSelectList<PaymentType>()"></select>
                             <div class="mb-3">
                                 <label for="nameOnCard" class="form-label">Name on card</label>
-                                <input type="text" class="form-control" id="nameOnCard" >
+                                <input asp-for="VendorAccount.NameOnCard" type="text" class="form-control" id="nameOnCard" >
                             </div>
                             <button type="submit" class="btn btn-primary">Subscribe</button>
+                                @if(TempData["msg"] != null)
+                                {
+                                    <p>@TempData["msg"]</p>
+                                }
                             </form>
                         </div>
                         <div class="col-md-2"></div>
