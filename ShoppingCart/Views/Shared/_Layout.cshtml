@@ -48,34 +48,15 @@
                             </li>
                         }
                     </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <!-- Sidebar -->
-                <div class="d-flex flex-column flex-shrink-0 bg-light">
-                    <a asp-controller="Products" asp-action="Index" class="d-flex align-items-center justify-content-center p-3 mb-3 link-dark text-decoration-none border-bottom">
-                        <span class="fs-5 fw-semibold">Categories</span>
-                    </a>
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        @*<vc:categories />*@
-                        @await Component.InvokeAsync("Categories")
-                    </ul>
-
-                    @if (User.Identity?.IsAuthenticated ?? false)
+                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <hr>
                         <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="d-flex a-text align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2">
                                 <strong>@User.Identity.Name</strong>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <ul class="dropdown-menu dropdown-menu-light dropdown-menu-end text-small shadow" aria-labelledby="dropdownUser1">
                                   @if (User.IsInRole("Customer"))
                                   {
                                     <a class="btn btn-vendor" data-bs-toggle="modal" data-bs-target="#vendorModal">Become a Vendor</a>
@@ -95,6 +76,24 @@
                             </ul>
                         </div>
                     }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- Sidebar -->
+                <div class="d-flex flex-column flex-shrink-0 bg-light">
+                    <a asp-controller="Products" asp-action="Index" class="d-flex align-items-center justify-content-center p-3 mb-3 link-dark text-decoration-none border-bottom">
+                        <span class="fs-5 fw-semibold">Categories</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        @*<vc:categories />*@
+                        @await Component.InvokeAsync("Categories")
+                    </ul>
                 </div>
 
             </div>

@@ -11,8 +11,8 @@ using ShoppingCart.Data;
 namespace ShoppingCart.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230424063107_init")]
-    partial class init
+    [Migration("20230424073436_nenw-scoasnodic9")]
+    partial class nenwscoasnodic9
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -344,6 +344,9 @@ namespace ShoppingCart.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("INTEGER");

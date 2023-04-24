@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShoppingCart.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class nenwscoasnodic9 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -349,6 +349,7 @@ namespace ShoppingCart.Migrations
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     ProductId = table.Column<long>(type: "INTEGER", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     OrderId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
