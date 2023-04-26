@@ -21,6 +21,7 @@ namespace ShoppingCart.Data
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<UserAccount> UsersAccounts { get; set; }
+        public DbSet<TaxRate> TaxRates { get; set; }
 
     }
 }

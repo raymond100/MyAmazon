@@ -13,6 +13,9 @@ using System.Text;
 using ShoppingCart.Repository;
 using ShoppingCart.Repository.BankSystem;
 using ShoppingCart.Repository.BankSystem.BankSystemModels;
+using Stripe;
+using Stripe.Checkout;
+
 
 namespace ShoppingCart.Controllers
 {
@@ -23,18 +26,33 @@ namespace ShoppingCart.Controllers
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
-        private readonly IPaymentRepository paymentRepository;
-        
+        private readonly IPaymentRepository _paymentRepository;
+        private readonly ITaxRateRepository _rateRepository;
+        private readonly ICartService _cartService;
+        private readonly StripeSettings _stripeSettings;
 
-        public OrderController(DataContext context, UserManager<AppUser> userManager, IProductService productService, IPaymentRepository paymentRepository
-        , IOrderService orderService, IOrderItemService orderItemService)
+
+
+        public OrderController(DataContext context, 
+        UserManager<AppUser> userManager, 
+        IProductService productService,
+        IOrderService orderService, 
+        IOrderItemService orderItemService, 
+        IPaymentRepository paymentRepository,
+        ITaxRateRepository rateRepository,
+        ICartService cartService,
+        StripeSettings stripeSettings
+        )
         {
             _context = context;
             _userManager = userManager;
             _productService = productService;
             _orderService = orderService;
             _orderItemService = orderItemService;
-            paymentRepository = paymentRepository;
+            _paymentRepository = paymentRepository;
+            _rateRepository = rateRepository;
+            _cartService = cartService;
+            _stripeSettings = stripeSettings;
         }
 
          public async Task<IActionResult> Index()
@@ -59,60 +77,104 @@ namespace ShoppingCart.Controllers
                 cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
             }
 
-            return View(new CartViewModel(new Cart { CartItems = cartItems }));
+            ShoppingCart.Models.TaxRate rate = await _rateRepository.GetLatestTaxRateAsync();
+
+            return View(new CartViewModel(new Cart { CartItems = cartItems, Rate = rate }));
         }
 
-         public async Task<IActionResult> PlaceOrder()
+        public async Task<IActionResult> PlaceOrder()
+{
+    var userId = _userManager.GetUserId(User);
+    Guid orderNumber = Guid.NewGuid();
+    DateTime currentDateTime = DateTime.Now;
+    List<CartItem> cartItems;
+    Cart userCart = null;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        AppUser user = await _userManager.GetUserAsync(User);
+        userCart = await _context.Carts.Include(c => c.CartItems)
+                             .ThenInclude(ci => ci.Product)
+                             .Include(c => c.Rate)
+                             .FirstOrDefaultAsync(c => c.UserId == user.Id);
+
+        if (userCart == null)
         {
-            var userId = _userManager.GetUserId(User);
-            //var user = await _userManager.FindByIdAsync(userId);
-            Guid orderNumber = Guid.NewGuid();
-
-            DateTime currentDateTime = DateTime.Now;
-            Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
-                                        .FirstOrDefaultAsync(c => c.UserId == userId);
-
-            var orderItems = new List<OrderItem>();
-            
-            foreach (var cartItem in userCart.CartItems)
-            {
-                var orderItem = new OrderItem
-                {
-                    Product = cartItem.Product,
-                    ProductName = cartItem.ProductName,
-                    Quantity = cartItem.Quantity,
-                    Price = cartItem.Price,
-                    OrderDate = currentDateTime
-                };
-               // await _orderItemService.CreateOrderItemAsync(orderItem);
-                orderItems.Add(orderItem);
-            }
-
-            Order data = new Order(userId,orderNumber.ToString(),currentDateTime,userCart.Total,orderItems);
-
-
-            var user = new UserAccount
-            {
-               Id = 30,
-               UserId = "aaa",
-               NameOnCard = "aaa",
-               CardNumber = 000,
-               ExpirationDate = DateTime.Now,
-               CVV = 000,
-               PaymentType = PaymentType.VISA
-            };
-
-            OrderPaymentData orderPaymentData = new OrderPaymentData();
-            orderPaymentData.Order = data;
-          
-            // Status status = paymentRepository.OrderPayment(orderPaymentData);
-            // if(status.StatusCode != 1)
-            // {
-            //     return RedirectToAction("Index");
-            // }
-            await _orderService.CreateOrderAsync(data);
-            TempData["Success"] = "Your oder is sucessul";
-            return RedirectToAction("Index");
+            return View();
         }
+
+        cartItems = userCart.CartItems;
+    }
+    else
+    {
+        cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+        ShoppingCart.Models.TaxRate latestRate = await _rateRepository.GetLatestTaxRateAsync();
+        userCart = new Cart
+        {
+            UserId = null,
+            CartItems = cartItems,
+            Rate = latestRate
+           
+        };
+    }
+
+    var orderItems = new List<OrderItem>();
+    
+    foreach (var cartItem in cartItems)
+    {
+        var orderItem = new OrderItem
+        {
+            Product = cartItem.Product,
+            ProductName = cartItem.ProductName,
+            Quantity = cartItem.Quantity,
+            Price = cartItem.Price,
+            OrderDate = currentDateTime
+        };
+        orderItems.Add(orderItem);
+    }
+
+    decimal totalAmount = userCart.Total + (userCart.Total * userCart.Rate.Rate);
+
+    try
+    {
+        // Create a payment intent
+        StripeConfiguration.ApiKey = "sk_test_51N13lMJv4RTYGtGNGaPzVCygiZuP5DEk9JJK9xfllJmn3YXdJDRhVqM6pM8NPfy1oCbcnPVYbLRzGDc10dCrbpfw00mQj4hBVN";
+        var paymentIntentService = new PaymentIntentService();
+        var paymentIntent = await paymentIntentService.CreateAsync(new PaymentIntentCreateOptions
+        {
+            Amount = (long) (totalAmount * 100),
+            Currency = "usd",
+            PaymentMethodTypes = new List<string> { "card" },
+            SetupFutureUsage = "off_session",
+            CaptureMethod = "manual",
+        });
+
+        // Create a new order if payment intent is created successfully
+        if (paymentIntent != null)
+        {                    
+            Order data = new Order(userId,orderNumber.ToString(),currentDateTime,totalAmount,orderItems,userCart.Rate);
+            await _orderService.CreateOrderAsync(data);
+            _cartService.ClearCartAsync();
+            TempData["SuccessMessage"] = "Thanks for your order!";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Please add items to your cart!";
+        }
+
+        return Json(new { clientSecret = paymentIntent.ClientSecret });
+    }
+    catch (StripeException e)
+    {
+        TempData["ErrorMessage"] = "Payment processing error!";
+    }
+               
+    TempData["ErrorMessage"] = "Please add items to your cart!";
+
+    return RedirectToAction("Index");
+}
+
+
+    
     }
 }

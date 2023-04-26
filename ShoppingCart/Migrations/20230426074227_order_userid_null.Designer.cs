@@ -11,8 +11,8 @@ using ShoppingCart.Data;
 namespace ShoppingCart.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230426035541_init")]
-    partial class init
+    [Migration("20230426074227_order_userid_null")]
+    partial class order_userid_null
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -247,11 +247,16 @@ namespace ShoppingCart.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("RateId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RateId");
 
                     b.ToTable("Carts");
                 });
@@ -330,14 +335,18 @@ namespace ShoppingCart.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("RateId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RateId");
 
                     b.ToTable("Orders");
                 });
@@ -423,6 +432,26 @@ namespace ShoppingCart.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ShoppingCart.Models.TaxRate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaxRates");
                 });
 
             modelBuilder.Entity("ShoppingCart.Models.UserAccount", b =>
@@ -574,6 +603,17 @@ namespace ShoppingCart.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ShoppingCart.Models.Cart", b =>
+                {
+                    b.HasOne("ShoppingCart.Models.TaxRate", "Rate")
+                        .WithMany()
+                        .HasForeignKey("RateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rate");
+                });
+
             modelBuilder.Entity("ShoppingCart.Models.CartItem", b =>
                 {
                     b.HasOne("ShoppingCart.Models.Cart", null)
@@ -595,6 +635,17 @@ namespace ShoppingCart.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShoppingCart.Models.Order", b =>
+                {
+                    b.HasOne("ShoppingCart.Models.TaxRate", "Rate")
+                        .WithMany()
+                        .HasForeignKey("RateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rate");
                 });
 
             modelBuilder.Entity("ShoppingCart.Models.OrderItem", b =>

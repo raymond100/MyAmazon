@@ -33,6 +33,7 @@ builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<IOrderRepository, EfOrderRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IOrderItemRepository, EfOrderItemRepository>();
+builder.Services.AddScoped<ITaxRateRepository, TaxRateRepository>();
 
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -64,6 +65,9 @@ builder.Services.AddSession(options =>
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
+
+ // Add Stripe configuration
+builder.Services.AddSingleton(builder.Configuration.GetSection("Stripe").Get<StripeSettings>());
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

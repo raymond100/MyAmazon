@@ -4,6 +4,7 @@ using ShoppingCart.Data;
 using ShoppingCart.Infrastructure;
 using ShoppingCart.Models;
 using ShoppingCart.Services;
+using ShoppingCart.Repository;
 using ShoppingCart.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
@@ -19,29 +20,42 @@ namespace ShoppingCart.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
+        private readonly ITaxRateRepository _rateRepository;
 
-        public CartController(DataContext context, UserManager<AppUser> userManager, IProductService productService,ICartService cartService)
+        public CartController(
+        DataContext context, 
+        UserManager<AppUser> userManager, 
+        IProductService productService,
+        ICartService cartService,
+        ITaxRateRepository rateRepository)
         {
             _context = context;
             _userManager = userManager;
             _productService = productService;
             _cartService = cartService;
+            _rateRepository = rateRepository;
         }
 
         public async Task<IActionResult> Index()
         {
             List<CartItem> cartItems;
+            TaxRate rate = null;
 
             if (User.Identity.IsAuthenticated)
             {
                 AppUser user = await _userManager.GetUserAsync(User);
-                Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
-                                        .FirstOrDefaultAsync(c => c.UserId == user.Id);
+                Cart userCart = await _context.Carts.Include(c => c.CartItems)
+                                     .ThenInclude(ci => ci.Product)
+                                     .Include(c => c.Rate)
+                                     .FirstOrDefaultAsync(c => c.UserId == user.Id);
 
                 if (userCart == null)
                 {
                     return View(new CartViewModel(new Cart()));
                 }
+
+                // Set the Rate property of the userCart object to the latest tax rate
+                rate = await _rateRepository.GetLatestTaxRateAsync();
 
                 cartItems = userCart.CartItems;
             }
@@ -50,8 +64,9 @@ namespace ShoppingCart.Controllers
                 cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
             }
 
-            return View(new CartViewModel(new Cart { CartItems = cartItems }));
+            return View(new CartViewModel(new Cart { CartItems = cartItems, Rate = rate }));
         }
+
 
 
 
@@ -71,15 +86,22 @@ namespace ShoppingCart.Controllers
         if (User.Identity.IsAuthenticated)
         {
             AppUser user = await _userManager.GetUserAsync(User);
-            Cart userCart = await _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product)
-                                    .FirstOrDefaultAsync(c => c.UserId == user.Id);
+            Cart userCart = await _context.Carts.Include(c => c.CartItems)
+                                     .ThenInclude(ci => ci.Product)
+                                     .Include(c => c.Rate)
+                                     .FirstOrDefaultAsync(c => c.UserId == user.Id);
+
+
+            TaxRate latestRate = await _rateRepository.GetLatestTaxRateAsync();
 
             if (userCart == null)
             {
                 userCart = new Cart
                 {
                     UserId = user.Id,
-                    CartItems = new List<CartItem>()
+                    CartItems = new List<CartItem>(),
+                    Rate = latestRate
+                   
                 };
 
                 await _context.Carts.AddAsync(userCart);
