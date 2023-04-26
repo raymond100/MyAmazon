@@ -13,7 +13,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="css/checkout.css" /> *@
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="js/checkout.js" defer></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <title>@ViewData["Title"]</title>
@@ -22,7 +25,7 @@
 <div class="main">
     <nav class="navbar">
         <div class="container d-flex">
-               <h5><a href="/" class="nav-link "> My Amazon</a></5>
+               <h5><a href="/" class="nav-link "> My Amazon</a></h5>
            
                 <h4>Checkout (@Model?.Cart?.CartItems.Count() items)</h4>
                 
@@ -30,39 +33,35 @@
         </div>
     </nav>
     <div class="container">
+        <form id="payment-form">
         <div class="row">
             <div class="col-md-8">
                  <div class="card my-4">
                     <div class="card-body">
                         <div id="toast-container" class="toast-top-right"></div>
-
-                       @* <div class="row">
-                            <div class="col-md-3 d-flex justify-content-between">
-                                <h5>1</h5>
-                                <h5>Shipping Address</h5>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Raymond Jean</p>
-                                <p>519 WORCESTER CT</p>
-                                <p>JACKSONVILLE, FL 32218-2659</p>
-                            </div>
-                            <div class="col-md-3 d-flex justify-content-end">
-                                <a href="" class="link">Change</a>
-                            </div>
-                            <hr>
-                       </div> *@
                         <div class="row">
                             <div class="col-md-3 d-flex justify-content-between">
                                 <h5>1</h5>
                                 <h5>Payment method</h5>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-auto">
+                               
+                                    <div id="link-authentication-element">
+                                        <!--Stripe.js injects the Link Authentication Element-->
+                                    </div>
+                                    <div id="payment-element">
+                                        <!--Stripe.js injects the Payment Element-->
+                                    </div>
+                                    <div id="payment-message" class="hidden"></div>
+                               
+                            </div>
+                            @* <div class="col-md-6">
                                 <img alt="Amazon Rewards Visa Signature Card" src="https://m.media-amazon.com/images/G/01/credit/img16/CBCC/cardart/thumbnails/AmazonRewardsCardArt._CB485935034_.png" data-cclogo="amzn" data-testid="" id="credit-card-image">
                                 <span class="t-size"><strong>Amazon Rewards Visa Signature Card</strong> ending in 6001</span>
                             </div>
                             <div class="col-md-3 d-flex justify-content-end">
                                 <a class="link" data-bs-toggle="modal" data-bs-target="#paymentModal">Change</a>
-                            </div>
+                            </div> *@
                             <hr>
                        </div>
                         <div class="row">
@@ -107,11 +106,15 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <a class="btn btn-warning px-4" asp-controller="Order" asp-action="PlaceOrder" style="border-radius: 7px;">Place your order</a>
+                                @* <a class="btn btn-warning px-4" asp-controller="Order" asp-action="PlaceOrder" style="border-radius: 7px;">Place your order</a>
                                     @if(TempData["msg"] != null)
                                     {
                                         <p>@TempData["msg"]</p>
-                                    }
+                                    } *@
+                                        <button id="submit" class="btn btn-warning px-4">
+                                        <div class="spinner hidden" id="spinner"></div>
+                                        <span id="button-text">Place your order</span>
+                                    </button>
                                 </div>
                             <div class="col-md-9">
                                 <div class="d-flex t-total mb-0">
@@ -150,7 +153,7 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p>Estimated tax to be collected:</p>
-                                <p>@Model.TaxAmount()</p>
+                                   <p>@Model.TaxAmount()</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p  class="mb-0">Total:</p>
@@ -166,6 +169,7 @@
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 

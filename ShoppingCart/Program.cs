@@ -66,6 +66,9 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
 
+ // Add Stripe configuration
+builder.Services.AddSingleton(builder.Configuration.GetSection("Stripe").Get<StripeSettings>());
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 4;

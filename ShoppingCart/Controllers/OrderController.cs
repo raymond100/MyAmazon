@@ -13,6 +13,9 @@ using System.Text;
 using ShoppingCart.Repository;
 using ShoppingCart.Repository.BankSystem;
 using ShoppingCart.Repository.BankSystem.BankSystemModels;
+using Stripe;
+using Stripe.Checkout;
+
 
 namespace ShoppingCart.Controllers
 {
@@ -26,6 +29,8 @@ namespace ShoppingCart.Controllers
         private readonly IPaymentRepository _paymentRepository;
         private readonly ITaxRateRepository _rateRepository;
         private readonly ICartService _cartService;
+        private readonly StripeSettings _stripeSettings;
+
 
 
         public OrderController(DataContext context, 
@@ -35,7 +40,9 @@ namespace ShoppingCart.Controllers
         IOrderItemService orderItemService, 
         IPaymentRepository paymentRepository,
         ITaxRateRepository rateRepository,
-        ICartService cartService)
+        ICartService cartService,
+        StripeSettings stripeSettings
+        )
         {
             _context = context;
             _userManager = userManager;
@@ -45,6 +52,7 @@ namespace ShoppingCart.Controllers
             _paymentRepository = paymentRepository;
             _rateRepository = rateRepository;
             _cartService = cartService;
+            _stripeSettings = stripeSettings;
         }
 
          public async Task<IActionResult> Index()
@@ -69,7 +77,7 @@ namespace ShoppingCart.Controllers
                 cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
             }
 
-            TaxRate rate = await _rateRepository.GetLatestTaxRateAsync();
+            ShoppingCart.Models.TaxRate rate = await _rateRepository.GetLatestTaxRateAsync();
 
             return View(new CartViewModel(new Cart { CartItems = cartItems, Rate = rate }));
         }
@@ -101,7 +109,7 @@ namespace ShoppingCart.Controllers
             else
             {
                 cartItems = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-                TaxRate latestRate = await _rateRepository.GetLatestTaxRateAsync();
+                ShoppingCart.Models.TaxRate latestRate = await _rateRepository.GetLatestTaxRateAsync();
                 userCart = new Cart
                 {
                     UserId = null,
@@ -128,37 +136,46 @@ namespace ShoppingCart.Controllers
                // await _orderItemService.CreateOrderItemAsync(orderItem);
                 orderItems.Add(orderItem);
             }
+             decimal totalAmount = userCart.Total + (userCart.Total * userCart.Rate.Rate);
 
-            decimal totalAmount = userCart.Total + (userCart.Total * userCart.Rate.Rate);
-            Order data = new Order(userId,orderNumber.ToString(),currentDateTime,totalAmount,orderItems,userCart.Rate);
-            await _orderService.CreateOrderAsync(data);
-            _cartService.ClearCartAsync();
-            TempData["SuccessMessage"] = "Your order has been submitted successfully!";
+              // This is your test secret API key.
+                StripeConfiguration.ApiKey = "sk_test_51N13lMJv4RTYGtGNGaPzVCygiZuP5DEk9JJK9xfllJmn3YXdJDRhVqM6pM8NPfy1oCbcnPVYbLRzGDc10dCrbpfw00mQj4hBVN";
+                // Alternatively, set up a webhook to listen for the payment_intent.succeeded event
+                // and attach the PaymentMethod to a new Customer
+                var customers = new CustomerService();
+                var customer = customers.Create(new CustomerCreateOptions());
+                var paymentIntentService = new PaymentIntentService();
 
+                try{
+                    var paymentIntent = paymentIntentService.Create(new PaymentIntentCreateOptions
+                    {
+                        Customer = customer.Id,
+                        SetupFutureUsage = "off_session",
+                        Amount = (long) (totalAmount * 100),
+                        Currency = "usd",
+                        AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                        {
+                          Enabled = true,
+                        },
+                        PaymentMethod = "pm_card_visa"
+                    });
 
-            // var userAccount = new UserAccount
-            // {
-            //    Id = 30,
-            //    UserId = "aaa",
-            //    NameOnCard = "aaa",
-            //    CardNumber = 0000000000000000,
-            //    ExpirationDate = DateTime.Now,
-            //    CVV = 000,
-            //    PaymentType = PaymentType.VISA
-            // };
+                    if(paymentIntent != null){                    
+                        Order data = new Order(userId,orderNumber.ToString(),currentDateTime,totalAmount,orderItems,userCart.Rate);
+                        await _orderService.CreateOrderAsync(data);
+                        _cartService.ClearCartAsync();
+                        TempData["SuccessMessage"] = "Thanks for your order!";
+                    }else{
+                          TempData["ErrorMessage"] = "Please add items to your cart!";
+                    }
+                    return Json(new { clientSecret = paymentIntent.ClientSecret });
+                }catch(StripeException e){
+                    TempData["ErrorMessage"] = "Payment processing error!";
+                }
 
-            // OrderPaymentData orderPaymentData = new OrderPaymentData();
-            // orderPaymentData.Order = data;
-            // orderPaymentData.Account = userAccount;
-            // Status status = _paymentRepository.OrderPayment(orderPaymentData);
-            // if(status.StatusCode != 1)
-            // {
-            //     TempData["msg"] = "order failed";
-            //     return RedirectToAction("Index");
-            // }
-          
-            // await _orderService.CreateOrderAsync(data);
-            // TempData["msg"] = "order Success";
+               
+             TempData["ErrorMessage"] = "Please add items to your cart!";
+
             return RedirectToAction("Index");
         }
     }
