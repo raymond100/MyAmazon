@@ -39,14 +39,16 @@
                         <input class="form-control me-2" type="text" name="SearchString" placeholder="Search" aria-label="Search">
                         <input class="btn btn-outline-light" type="submit" value="Search" />
                     </form>
-                    
-                        @await Component.InvokeAsync("SmallCart")
-                        @if (!User.Identity?.IsAuthenticated ?? false)
-                        {
-                            <li class="nav-item px-2">
-                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
-                            </li>
-                        }
+
+                        <div class="d-flex align-content-end">
+                            @await Component.InvokeAsync("SmallCart")
+                            @if (!User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <li class="nav-item px-2">
+                                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+                                </li>
+                            }
+                        </div>
                     </ul>
                      @if (User.Identity?.IsAuthenticated ?? false)
                     {
@@ -94,35 +96,6 @@
                         @*<vc:categories />*@
                         @await Component.InvokeAsync("Categories")
                     </ul>
-
-                    @if (User.Identity?.IsAuthenticated ?? false)
-                    {
-                        <hr>
-                        <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2">
-                                <strong>@User.Identity.Name</strong>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                                @if (User.IsInRole("Customer") && ! User.IsInRole("Vendor"))
-                                  {
-                                    <a class="btn btn-vendor" data-bs-toggle="modal" data-bs-target="#vendorModal">Become a Vendor</a>
-                                    <li><hr class="dropdown-divider"></li>
-                                  }
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <li><a class="dropdown-item" href="/admin">Administration</a></li>
-                                }
-                                @if (User.IsInRole("Vendor"))
-                                {
-                                    <li><a class="dropdown-item" href="/vendor">My store</a></li>
-                                }
-                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">Sign out</a></li>
-                            </ul>
-                        </div>
-                    }
                 </div>
 
             </div>

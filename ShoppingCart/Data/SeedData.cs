@@ -87,6 +87,17 @@ namespace ShoppingCart.Data
                 }
             }
 
+          
+             //Add Taxes
+             var newTaxRate = new TaxRate
+            {
+                Rate = 0.07M,
+                StartDate = new DateTime(2023, 4, 25)
+            };
+
+            context.TaxRates.Add(newTaxRate);
+            context.SaveChanges();
+
 
 
             if (!context.Products.Any())

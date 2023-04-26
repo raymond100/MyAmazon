@@ -5,6 +5,8 @@ namespace ShoppingCart.Models
         public int Id { get; set; }
         public string UserId { get; set; }
         public virtual List<CartItem> CartItems { get; set; }
+        public TaxRate Rate { get; set; }
+
 
         public Cart(){
 
@@ -15,6 +17,8 @@ namespace ShoppingCart.Models
         {
             get { return CartItems.Sum(c => c.Subtotal); }
         }
+
+
     }
 
 }

@@ -33,7 +33,7 @@
             <div class="col-md-8">
                  <div class="card my-4">
                     <div class="card-body">
-                       <div class="row">
+                       @* <div class="row">
                             <div class="col-md-3 d-flex justify-content-between">
                                 <h5>1</h5>
                                 <h5>Shipping Address</h5>
@@ -47,10 +47,10 @@
                                 <a href="" class="link">Change</a>
                             </div>
                             <hr>
-                       </div>
+                       </div> *@
                         <div class="row">
                             <div class="col-md-3 d-flex justify-content-between">
-                                <h5>2</h5>
+                                <h5>1</h5>
                                 <h5>Payment method</h5>
                             </div>
                             <div class="col-md-6">
@@ -64,7 +64,7 @@
                        </div>
                         <div class="row">
                             <div class="col-md-3 d-flex justify-content-between">
-                                <h5>3</h5>
+                                <h5>2</h5>
                                 <h5>Review items</h5>
                             </div>
                             <div class="col-md-7">
@@ -113,7 +113,7 @@
                             <div class="col-md-9">
                                 <div class="d-flex t-total mb-0">
                                     <p class="mb-0">Order Total:</p>
-                                    <p class="mb-0" >$@Model?.Cart?.Total</p>
+                                    <p class="mb-0" >$@Model?.TotalAmount()</p>
                                 </div>
                                 <small class="t-size">By placing your order, you agree to My Amazon's privacy notice and conditions of use.</small>
                             </div>
@@ -125,7 +125,7 @@
                 <div class="card my-4 card-summary" style="box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);">
                     <div class="card-body">
                         <div class="d-grid gap-2 col-12 mx-auto">
-                            <a class="btn btn-warning px-4 btn-sm" style="border-radius: 7px;">Place your order</a>
+                            <a class="btn btn-warning px-4 btn-sm" style="border-radius: 7px;"  asp-controller="Order" asp-action="PlaceOrder">Place your order</a>
                             <small class="t-size">By placing your order, you agree to My Amazon's privacy notice and conditions of use.</small>
                             <hr>
                         </div>
@@ -147,16 +147,16 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p>Estimated tax to be collected:</p>
-                                <p>$0</p>
+                                <p>@Model.TaxAmount()</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p  class="mb-0">Total:</p>
-                                <p  class="mb-0">$@Model?.Cart?.Total</p>
+                                <p  class="mb-0">$@Model?.TotalAmount()</p>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between t-total">
                                 <p>Order Total:</p>
-                                <p >$@Model?.Cart?.Total</p>
+                                <p >$@Model?.TotalAmount()</p>
                             </div>
                         </div>
                     </div>
