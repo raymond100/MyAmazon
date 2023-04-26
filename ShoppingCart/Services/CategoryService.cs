@@ -42,5 +42,15 @@ namespace  ShoppingCart.Services
         {
             await _categoryRepository.DeleteAsync(category);
         }
+
+        public Task<List<Category>> GetApprovedCategoriesAsync()
+        {
+            return _categoryRepository.GetApprovedCategoriesAsync();
+        }
+
+        public Task<List<Category>> GetNonApprovedCategoriesAsync()
+        {
+            return _categoryRepository.GetNonApprovedCategoriesAsync();
+        }
     }
 }

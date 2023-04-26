@@ -59,8 +59,8 @@
                                     <td>
                                      @if (((List<IdentityUserRole<string>>)ViewBag.users[i].Roles).Any(r => r.RoleId == "Vendor"))
                                         {
-                                                <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="Approve" asp-route-UserId="@ViewBag.users[i].Id">Approve</a>
-                                                <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="Reject" asp-route-UserId="@ViewBag.users[i].Id">Reject</a>
+                                                <a class="btn btn-success btn-sm" asp-controller="Admin" asp-action="Approve" asp-route-UserId="@ViewBag.users[i].Id">Approve</a>
+                                                <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="Reject" asp-route-UserId="@ViewBag.users[i].Id">Reject</a>
                                         }
                                     </td>
                                 </tr>
@@ -76,42 +76,26 @@
         <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
             <div class="container">
                 <div class="row">
-                    <div class="container p-4">
-                        <div class="row p-3">
-                            <div class="col-6">
-                                <h2 class="text-primary">List of Categories</h2>
-                            </div>
-                            <div class="col-6 text-end">
-                                <a class="btn btn-primary" asp-action="CreateUpdate" asp-controller="Category">
-                                    <i class="bi bi-plus-circle"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-bordered table-striped" style="width:100%">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th>
-                                    Category Name
-                                </th>
-                                <th>
-                                    Slug
-                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Slug</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ViewBag.category)
+                            @for (int i = 0; i < ViewBag.categories.Count; i++)
                             {
+
                                 <tr>
-                                    <td> @item.Name</td>
-                                    <td> @item.Slug</td>
-                                    <td role="group">
-                                        <a asp-action="CreateUpdate" asp-controller="Category" asp-route-Id="@item.Id">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a asp-action="Delete" asp-controller="Category" asp-route-Id="@item.Id">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td>@ViewBag.categories[i]?.Name</td>
+                                    <td>@ViewBag.categories[i]?.Slug</td>
+                                    <td>
+                                        <a class="btn btn-success" asp-controller="Admin" asp-action="ApproveCategory" asp-route-Id="@ViewBag.categories[i].Id">Approve</a>
+                                        <a class="btn btn-danger" asp-controller="Admin" asp-action="RejectCategory" asp-route-Id="@ViewBag.categories[i].Id">Reject</a>
                                     </td>
                                 </tr>
                             }
@@ -119,7 +103,8 @@
                     </table>
                 </div>
             </div>
-        </div>            
+        </div>
+             
     <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
         <div class="container">
             <div class="row">

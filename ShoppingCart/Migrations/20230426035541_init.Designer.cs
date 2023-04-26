@@ -11,8 +11,8 @@ using ShoppingCart.Data;
 namespace ShoppingCart.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230424073436_nenw-scoasnodic9")]
-    partial class nenwscoasnodic9
+    [Migration("20230426035541_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -295,6 +295,9 @@ namespace ShoppingCart.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("IsApproved")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
