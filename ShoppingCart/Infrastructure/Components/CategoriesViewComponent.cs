@@ -13,7 +13,9 @@ namespace ShoppingCart.Infrastructure.Components
             _context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync() => View(await _context.Categories.ToListAsync());
+        //public async Task<IViewComponentResult> InvokeAsync() => View(await _context.Categories.ToListAsync());
+
+        public async Task<IViewComponentResult> InvokeAsync() => View(await _context.Categories.Where(c => c.IsApproved == true).ToListAsync());
     }
 }
 
