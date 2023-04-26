@@ -72,8 +72,8 @@ namespace ShoppingCart.Controllers
         public async Task<IActionResult> VendorPayment(VendorPaymentData model)
         {
             var resunt = paymentRepository.VendorPayment(model);
-            if (resunt.StatusCode == 1)
-            {
+            // if (resunt.StatusCode == 1)
+            // {
                 AppUser user = await userManager.GetUserAsync(User);
                 var role = await roleManager.FindByNameAsync("Vendor");
                 if (role == null)
@@ -89,7 +89,7 @@ namespace ShoppingCart.Controllers
                 UserAccount account = model.VendorAccount;
                 account.UserId = user.Id;
                 userRepository.SaveUserAccount(account);
-            }
+            // }
 
 
             TempData["msg"] = resunt.Message;

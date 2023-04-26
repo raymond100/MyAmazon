@@ -69,7 +69,7 @@
                                 <strong>@User.Identity.Name</strong>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-light dropdown-menu-end text-small shadow" aria-labelledby="dropdownUser1">
-                                @if (User.IsInRole("Customer"))
+                                @if (User.IsInRole("Customer") && !User.IsInRole("Vendor"))
                                 {
                                     <a class="btn btn-vendor" data-bs-toggle="modal" data-bs-target="#vendorModal">Become a Vendor</a>
                                     <li><hr class="dropdown-divider"></li>
