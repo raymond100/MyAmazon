@@ -35,11 +35,11 @@ namespace ShoppingCart.Controllers
 
             var users =  await _userService.GetAllNonApprovedUsers();
 
-            var category = await _categoryService.GetAllAsync();
+            var categories = await _categoryService.GetNonApprovedCategoriesAsync();
 
             ViewBag.products = products;
             ViewBag.users = users;
-            ViewBag.category = category;
+            ViewBag.categories = categories;
 
             return View();
         }
@@ -76,6 +76,24 @@ namespace ShoppingCart.Controllers
             _userService.DeleteUser(UserId);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> RejectCategory(int Id)
+        {
+            Category category = await _categoryService.GetByIdAsync(Id);
+            await _categoryService.DeleteAsync(category);
+
+            TempData["Success"] = "Category has been rejected successfuly!";
+            return RedirectToAction("index");
+        }
+        public async Task<IActionResult> ApproveCategory(int Id)
+        {
+            Category category = await _categoryService.GetByIdAsync(Id);
+            category.IsApproved = true;
+            await _categoryService.UpdateAsync(category);
+
+            TempData["Success"] = "Category has been approved successfuly!";
+            return RedirectToAction("index");
         }
     }
 }

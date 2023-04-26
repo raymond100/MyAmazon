@@ -2,10 +2,8 @@
 
 
 @foreach(var item in Model)
-{
-    <li class="nav-item">
-        <a class="nav-link link-dark" asp-controller="Products" asp-action="Index" asp-route-categorySlug="@item.Slug">@item.Name</a>                                                                                             
-    </li>
+{  
+   <a class="dropdown-item" asp-controller="products" asp-action="index" asp-route-categorySlug="@item.Slug">@item.Name</a>   
 }
 
 

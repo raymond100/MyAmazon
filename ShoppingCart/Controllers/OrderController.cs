@@ -25,6 +25,7 @@ namespace ShoppingCart.Controllers
         private readonly IOrderItemService _orderItemService;
         private readonly IPaymentRepository _paymentRepository;
         private readonly ITaxRateRepository _rateRepository;
+        private readonly ICartService _cartService;
 
 
         public OrderController(DataContext context, 
@@ -33,7 +34,8 @@ namespace ShoppingCart.Controllers
         IOrderService orderService, 
         IOrderItemService orderItemService, 
         IPaymentRepository paymentRepository,
-        ITaxRateRepository rateRepository)
+        ITaxRateRepository rateRepository,
+        ICartService cartService)
         {
             _context = context;
             _userManager = userManager;
@@ -42,6 +44,7 @@ namespace ShoppingCart.Controllers
             _orderItemService = orderItemService;
             _paymentRepository = paymentRepository;
             _rateRepository = rateRepository;
+            _cartService = cartService;
         }
 
          public async Task<IActionResult> Index()
@@ -126,8 +129,11 @@ namespace ShoppingCart.Controllers
                 orderItems.Add(orderItem);
             }
 
-            Order data = new Order(userId,orderNumber.ToString(),currentDateTime,userCart.Total,orderItems,userCart.Rate);
+            decimal totalAmount = userCart.Total + (userCart.Total * userCart.Rate.Rate);
+            Order data = new Order(userId,orderNumber.ToString(),currentDateTime,totalAmount,orderItems,userCart.Rate);
             await _orderService.CreateOrderAsync(data);
+            _cartService.ClearCartAsync();
+            TempData["SuccessMessage"] = "Your order has been submitted successfully!";
 
 
             // var userAccount = new UserAccount

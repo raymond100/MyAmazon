@@ -10,5 +10,7 @@ namespace ShoppingCart.Repository
         Task<Category> CreateAsync(Category category);
         Task<Category> UpdateAsync(Category category);
         Task DeleteAsync(Category category);
+        public Task<List<Category>> GetApprovedCategoriesAsync();
+        public Task<List<Category>> GetNonApprovedCategoriesAsync();
     }
 }

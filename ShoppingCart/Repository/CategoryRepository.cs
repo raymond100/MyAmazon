@@ -48,5 +48,14 @@ namespace ShoppingCart.Repository
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Category>> GetApprovedCategoriesAsync()
+        {
+            return await _context.Categories.Where(c => c.IsApproved == true).ToListAsync();
+        }
+        public async Task<List<Category>> GetNonApprovedCategoriesAsync()
+        {
+            return await _context.Categories.Where(c => c.IsApproved == false).ToListAsync();
+        }
     }
 }

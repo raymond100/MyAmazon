@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShoppingCart.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_Schema : Migration
+    public partial class New_schema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,7 +85,8 @@ namespace ShoppingCart.Migrations
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Slug = table.Column<string>(type: "TEXT", nullable: true)
+                    Slug = table.Column<string>(type: "TEXT", nullable: true),
+                    IsApproved = table.Column<bool>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -21,7 +21,7 @@ namespace ShoppingCart.Models.ViewModels
             decimal taxAmount = 0;
             foreach (var item in Cart.CartItems)
             {
-                decimal rate = Cart.Rate?.Rate ?? 0.17M; // if Rate is null, set rate to zero
+                decimal rate = Cart.Rate?.Rate ?? 0.07M; // if Rate is null, set rate to zero
                 taxAmount += item.Price * item.Quantity * rate;
             }
 
