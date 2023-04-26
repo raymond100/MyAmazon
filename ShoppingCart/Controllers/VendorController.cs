@@ -16,20 +16,25 @@ namespace ShoppingCart.Controllers
         private readonly IOrderItemService _orderItemService;
         private readonly IUserService _userService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ICategoryService _categoryService;
 
-        public VendorController(IOrderItemService orderItemService,IProductService productService, IUserService userService,UserManager<AppUser> userManager){
+        public VendorController(IOrderItemService orderItemService,IProductService productService, 
+            IUserService userService,UserManager<AppUser> userManager, ICategoryService categoryService)
+        {
             _productService = productService;
             _userService = userService;
             _userManager = userManager;
             _orderItemService = orderItemService;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
             var user = await _userManager.FindByIdAsync(userId);
+            
 
-            if(user != null)
+            if (user != null)
             {
                 if (await _userManager.IsInRoleAsync(user, "Vendor"))
                 {
@@ -61,6 +66,11 @@ namespace ShoppingCart.Controllers
                     ViewBag.TotalSales = total;
                 }
             }
+
+            var category = await _categoryService.GetAllAsync();
+            ViewBag.Category = category;
+
+
             return View();
         }
 
